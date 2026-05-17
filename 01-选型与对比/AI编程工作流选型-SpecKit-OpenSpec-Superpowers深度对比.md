@@ -4,6 +4,8 @@
 
 AI 编程工作流选型对比
 
+![AI 编程工作流选型对比](images/dba6c2e20e3ea3726e672a49899445e4.png)
+
 _图 1：Spec-Kit、OpenSpec、Superpowers 三款 AI 编程工作流工具对比_
 
 用 AI 编程代理写代码，你有没有遇到过这些问题：
@@ -115,6 +117,8 @@ Superpowers 基于 Shell/JavaScript，核心是**技能触发系统**——不�
 | 变更追踪 | Git 分支隔离 | changes/ 目录 | Git Worktrees |
 | 状态管理 | 阶段门控 | 提案状态 | 技能激活状态 |
 
+![架构对比](images/96d1d9312721d357cfbfea899a5889f6.png)
+
 ### 3. 核心特性对比
 
 | 维度 | Spec-Kit | OpenSpec | Superpowers |
@@ -131,6 +135,8 @@ Superpowers 基于 Shell/JavaScript，核心是**技能触发系统**——不�
 | 团队协作 | 企业级 | 开发中 | Discord 社区 |
 | 学习曲线 | 中等 | 平缓 | 平缓 |
 | 定制性 | 高（扩展/预设） | 中等 | 高（技能系统） |
+
+![核心特性雷达图](images/1ee08e09a1668c5db544d121600039fc.png)
 
 ### 4. 工作流范式对比
 
@@ -164,6 +170,8 @@ brainstorming → writing-plans → executing-plans → TDD → code-review
 
 不是手动调用命令，而是通过上下文自动触发相关技能。
 
+![工作流范式对比](images/5b689f686590cea63f339284f4a822d2.png)
+
 ### 5. 实战示例
 
 #### Spec-Kit 实战
@@ -195,6 +203,8 @@ npm install -g @fission-ai/openspec@latest
 | 现有代码库改造 | OpenSpec | built for brownfield |
 | 跨工具开发 | OpenSpec | 支持 20+ AI 编程工具 |
 | 需要规范生成代码 | Spec-Kit | 规范可执行化是核心定位 |
+
+![技术选型决策树](images/4f46eb29ee7ac112d98280ba3e86119d.png)
 
 ### 7. 三者的局限与权衡
 

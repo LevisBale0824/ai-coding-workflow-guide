@@ -2,6 +2,8 @@
 
 > 🚩 2026 年「术哥无界」系列实战文档 X 篇原创计划 第 _112_ 篇，AI 编程最佳实战「2026」系列第 _34_ 篇
 
+![OpenSpec 工作流对比示意图](images/08695ed7780ebb1d3f06dae27c5cb2ca.png)
+
 ## 1. 先搞清楚：Core 和 Expanded 有什么区别
 
 OpenSpec 的命令集通过 **Profile 系统** 动态控制。默认的 `core` profile 只暴露 5 个命令：
@@ -17,6 +19,8 @@ propose → explore → apply → sync → archive
 - 新上手 OpenSpec，需要**引导式教程**
 
 这些能力都在 **Expanded 命令集**里。OpenSpec 总共提供了 11 个 workflow 命令，core 只给了 5 个，剩下的 6 个需要手动开启。
+
+![Core 5 个命令 vs Expanded 额外 6 个命令对比](images/ad9610307ea5d4b595796e7ec0c6bc58.png)
 
 | 维度 | Core | Expanded |
 | --- | --- | --- |
@@ -58,6 +62,8 @@ Config changes:
 
 根据依赖关系，自动创建下一个还缺的产物。你可以审查完一个再推下一个。
 
+![产物依赖关系图](images/785d5f885401aefba182aa962887da5f.png)
+
 ### `/opsx:ff` - 快进创建所有产物
 
 fast-forward。一键创建 proposal → specs → design → tasks 全部规划产物。
@@ -97,6 +103,8 @@ fast-forward。一键创建 proposal → specs → design → tasks 全部规划
 ### 模式三：Parallel Changes - 多线并行
 
 同时推进多个 change，完成后用 `/opsx:bulk-archive` 一次性归档。
+
+![三种工作流模式对比](images/763249d0ce0780ad468a178856754eae.png)
 
 ### `/opsx:ff` 还是 `/opsx:continue`？
 

@@ -6,6 +6,8 @@
 >
 > 我是**术哥**，一名专注于 AI 编程、AI 智能体、Agent Skills、MCP、云原生、AIOps、Milvus 向量数据库的**技术实践者与开源布道者**！
 
+![封面图 - 信息图风格：OpenSpec 工作流全景](images/c49912838b30b5f191a8488c7d42f26b.png)
+
 ## 1. 从方法论到实战
 
 上期讲完方法论——2/8 法则、三步配置、6 个 Phase 的日常工作流。结论很明确：**改 tasks 的 instruction 这一段配置文本，投入 20%，覆盖 80% 的质量提升。**
@@ -22,6 +24,8 @@ Explore  →  Propose  →  Review  →  Apply   →  验证    →  Archive
  澄清       生成       人工检查   按任务       浏览器     归档
  需求       5 工件     1-2 分钟   实现        确认       change
 ```
+
+![流程图：6 步从探索到验证](images/2ebb0c9cbc5a63891d39232e682b5ce9.png)
 
 ## 2. 探索：用 Explore 澄清需求
 
@@ -119,6 +123,8 @@ src/
 - [ ] 8. 验证（1 step）
 ```
 
+![依赖关系图：5 个工件的依赖链](images/35e8ca1079c5b099d444936182366131.png)
+
 ## 4. 执行：apply 按任务实现
 
 ### 关键实现片段
@@ -171,12 +177,16 @@ export default function Router() {
 
 **踩坑 2：GitHub 推送需要预先配置 `gh auth login`**
 
+![项目结构图：最终目录可视化](images/251150e7a8d74f51975ecc270b3f29bc.png)
+
 ## 5. 浏览器验证
 
 确认三件事：
 - 首页显示 `shuge AI Toolbox` ✅
 - 首页显示"暂无工具" ✅
 - 访问不存在的路径显示 404 提示 ✅
+
+![浏览器验证：首页截图](images/f6fcf8a4d949e696c8930e3eb77e85ad.png)
 
 ## 6. 归档：archive
 
@@ -193,6 +203,8 @@ export default function Router() {
 - tasks.md 粒度实测通过：8 组 33 个子任务
 - 初始化顺序：先 Vite 再 OpenSpec
 - GitHub CLI 配一次受用全程
+
+![实测数据总结：关键指标和结论](images/b653fa64c18e554ae005458f86db1fb3.png)
 
 ## 8. 下一期预告
 
