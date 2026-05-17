@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: 封面图](https://developer.qcloudimg.com/http-save/10642399/db19ce111a14022efa3e1d0931ad72cf.png)
+![Image 1: 封面图](images/db19ce111a14022efa3e1d0931ad72cf.png)
 
 封面图
 
@@ -20,7 +20,7 @@ _图 1：Superpowers 7 阶段工作流全景信息图_
 
 ### 一、Superpowers 7 阶段工作流全景
 
-![Image 2: 7阶段工作流全景流程图](https://developer.qcloudimg.com/http-save/10642399/a90424f0a6cc4c9d2b9b78cd23e7db3a.png)
+![Image 2: 7阶段工作流全景流程图](images/a90424f0a6cc4c9d2b9b78cd23e7db3a.png)
 
 7阶段工作流全景流程图
 
@@ -518,7 +518,7 @@ $ git worktree remove .worktrees/sku-deduction
 
 整个流程到这里就结束了。从需求澄清到代码合并，全程有测试保护、有审查关卡。
 
-![Image 3: 终端输出示意图](https://developer.qcloudimg.com/http-save/10642399/d8c0b6f4214e5c599884a1fe4fc3c92e.png)
+![Image 3: 终端输出示意图](images/d8c0b6f4214e5c599884a1fe4fc3c92e.png)
 
 终端输出示意图
 
@@ -570,7 +570,7 @@ brainstorming → writing-plans
 
 每个阶段只加一个新的技能，压力小很多。前三周甚至不需要安装 Superpowers，手动模拟这些流程也能帮你建立工程思维。
 
-![Image 4: 渐进式学习路线图](https://developer.qcloudimg.com/http-save/10642399/d8f4da7da5e1a3052032ac34029ee49f.png)
+![Image 4: 渐进式学习路线图](images/d8f4da7da5e1a3052032ac34029ee49f.png)
 
 渐进式学习路线图
 

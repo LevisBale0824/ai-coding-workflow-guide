@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![OpenSpec Expanded Workflow 全景概览](https://developer.qcloudimg.com/http-save/10642399/8f39ba4151a4a828938a64470e4bf5fc.png)
+![OpenSpec Expanded Workflow 全景概览](images/8f39ba4151a4a828938a64470e4bf5fc.png)
 
 _图 1：OpenSpec Expanded Workflow 命令全景概览_
 
@@ -58,7 +58,7 @@ openspec update
 
 运行 `openspec config profile` 后会出现交互式选择，选 expanded 即可。`openspec update` 会重新生成 `.claude/skills/`（或对应工具的指令目录），让 AI 助手识别新的命令。
 
-![Core vs Expanded 工作流对比](https://developer.qcloudimg.com/http-save/10642399/b36dffb6547b32ce3edf69d217943bba.png)
+![Core vs Expanded 工作流对比](images/b36dffb6547b32ce3edf69d217943bba.png)
 
 _图 2：Core 工作流（4 命令线性）vs Expanded 工作流（11 命令网状）对比_
 
@@ -206,7 +206,7 @@ AI:  Verifying add-auth...
 
 说实话，verify 不会阻止归档。它只是把问题暴露出来，让你决定要不要处理。官方的建议是：在 `/opsx:archive` 之前先跑一次 verify，能提前发现规格和实现之间的偏差。
 
-![/opsx:verify 三维度验证示意图](https://developer.qcloudimg.com/http-save/10642399/65f7fded1e0d13e281a885cbb03e8557.png)
+![/opsx:verify 三维度验证示意图](images/65f7fded1e0d13e281a885cbb03e8557.png)
 
 _图 3：/opsx:verify 三维度验证（完整性/正确性/一致性）检查机制_
 
@@ -418,7 +418,7 @@ AI:  Resuming add-dark-mode...
 
 这是 expanded 模式推荐的收尾流程。先 apply 实现代码，再 verify 检查一致性，确认没问题后 archive 归档。archive 时如果规格还没同步，会自动提示你。
 
-![4 种工作流模式概览](https://developer.qcloudimg.com/http-save/10642399/9ebd65ef890f0ba37dc8ae6c6a36f9a1.png)
+![4 种工作流模式概览](images/9ebd65ef890f0ba37dc8ae6c6a36f9a1.png)
 
 _图 4：OpenSpec Expanded Workflow 的 4 种工作流模式及适用场景_
 
@@ -495,7 +495,7 @@ expanded 模式的底层是制品依赖图（DAG）。理解这个结构，能�
 
 这个 DAG 是可以定制的——如果你觉得自己的工作流不需要 design，完全可以通过自定义 schema 去掉它。
 
-![制品依赖关系 DAG 可视化](https://developer.qcloudimg.com/http-save/10642399/ebe78e4a49bc644e9a947a20febe7581.png)
+![制品依赖关系 DAG 可视化](images/ebe78e4a49bc644e9a947a20febe7581.png)
 
 _图 5：spec-driven schema 制品依赖关系（DAG），specs 和 design 可并行创建_
 

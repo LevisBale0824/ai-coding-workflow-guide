@@ -12,7 +12,7 @@
 
 翻一圈技术社区的反馈，吐槽出奇一致：AI 太急了。你刚说完需求，它就开始输出代码；代码跑起来了，测试没写；bug 修了，根因没找 - 下次遇到同类问题，该错还是错。
 
-![Image 1: Superpowers 信息图封面](https://developer.qcloudimg.com/http-save/10642399/bc204e4b9e322941dc6506431bc7d635.png)
+![Image 1: Superpowers 信息图封面](images/bc204e4b9e322941dc6506431bc7d635.png)
 
 Superpowers 信息图封面
 
@@ -56,7 +56,7 @@ brainstorming → using-git-worktrees → writing-plans → subagent-driven-deve
 6. __代码审查__ - 自动审查代码质量
 7. __完成分支__ - 验证通过后收尾
 
-![Image 2: 工作流全景结构图](https://developer.qcloudimg.com/http-save/10642399/f511f7abbbd16f38177211c5fb03862e.png)
+![Image 2: 工作流全景结构图](images/f511f7abbbd16f38177211c5fb03862e.png)
 
 工作流全景结构图
 
@@ -100,7 +100,7 @@ __元类（2 个）__：writing-skills、using-superpowers
 
 Superpowers 的 brainstorming 技能有一条硬性门槛：__不展示设计并获得用户批准前，绝不启动任何实现__。这等于强制你在写代码前先把需求想清楚。
 
-![Image 3: 新项目 7 步工作流示意图](https://developer.qcloudimg.com/http-save/10642399/17df68cf95440cef2aaf24cb362fc659.png)
+![Image 3: 新项目 7 步工作流示意图](images/17df68cf95440cef2aaf24cb362fc659.png)
 
 新项目 7 步工作流示意图
 
@@ -210,7 +210,7 @@ systematic-debugging → test-driven-development → verification-before-complet
 
 systematic-debugging 是这个场景的核心技能，严格分四个阶段：
 
-![Image 4: BUG 修复工作流示意图](https://developer.qcloudimg.com/http-save/10642399/88691077919d77d889d25d7ce4b79f7d.png)
+![Image 4: BUG 修复工作流示意图](images/88691077919d77d889d25d7ce4b79f7d.png)
 
 BUG 修复工作流示意图
 

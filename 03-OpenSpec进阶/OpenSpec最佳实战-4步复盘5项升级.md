@@ -8,7 +8,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![信息图封面 - OpenSpec 四步法复盘](https://developer.qcloudimg.com/http-save/10642399/dcd770fd10b88118265c267b1a99140d.png)
+![信息图封面 - OpenSpec 四步法复盘](images/dcd770fd10b88118265c267b1a99140d.png)
 
 _图 1：OpenSpec 四步法复盘——流程完整 ≠ 代码正确_
 
@@ -47,7 +47,7 @@ OpenSpec（GitHub: Fission-AI/OpenSpec，35K+ Star）的核心理念是**先和 
 
 这些工件之间有严格的依赖关系：proposal 生成 specs 和 design，specs 和 design 共同产出 tasks，tasks 驱动最终的代码实现。
 
-![工件依赖关系 DAG 图](https://developer.qcloudimg.com/http-save/10642399/983c1cf083593a886fb10b4984a42177.png)
+![工件依赖关系 DAG 图](images/983c1cf083593a886fb10b4984a42177.png)
 
 _图 2：OpenSpec 四个工件的 DAG 依赖关系_
 
@@ -103,7 +103,7 @@ archive 做的是归档变更、合并 Delta Specs。质量风险相对较低，
 
 前面说了，verify 不会阻塞 archive。也就是说，即使 verify 发现了问题，archive 照样可以执行。你可能归档了一份有问题的变更，后续的其他变更会基于这份有问题的代码继续构建。问题就这样被埋进去了。
 
-![差距分析图 - 四步法设计意图 vs 实际短板](https://developer.qcloudimg.com/http-save/10642399/20d15bedf5a599181511503dc9bc0d6b.png)
+![差距分析图 - 四步法设计意图 vs 实际短板](images/20d15bedf5a599181511503dc9bc0d6b.png)
 
 _图 3：四步法各环节设计意图与实际短板对比_
 
@@ -130,7 +130,7 @@ _图 3：四步法各环节设计意图与实际短板对比_
 
 还有一个容易被忽视的因素：上下文窗口压力。官方 README 明确建议：`OpenSpec benefits from a clean context window. Clear your context before starting implementation`。但在 apply 过程中，AI 需要同时持有 Proposal + Specs + Design + Tasks 的信息。复杂变更产生的代码量一大，上下文窗口就会被填满，AI 在长会话中可能**遗忘**早期的设计决策，导致实现和原始设计产生偏差。
 
-![多米诺风险传导图](https://developer.qcloudimg.com/http-save/10642399/c7bced01cf9c8225490eb04c39c51cc0.png)
+![多米诺风险传导图](images/c7bced01cf9c8225490eb04c39c51cc0.png)
 
 _图 4：质量风险级联传导——问题累积，越往后越难修复_
 
@@ -248,7 +248,7 @@ TDD 不需要严格遵循**红-绿-重构**的完整循环，但**先想清楚�
 
 只有全部通过，才执行 Archive。这个清单可以根据项目实际情况增减条目。
 
-![升级方案对比图](https://developer.qcloudimg.com/http-save/10642399/fbc73ada2c75b8760014e4b1fedad4a0.png)
+![升级方案对比图](images/fbc73ada2c75b8760014e4b1fedad4a0.png)
 
 _图 5：原四步法 vs 升级后工作流对比（新增环节已标注）_
 

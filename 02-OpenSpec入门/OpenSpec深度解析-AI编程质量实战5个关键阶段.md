@@ -6,7 +6,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![OpenSpec 质量保障信息图封面](https://developer.qcloudimg.com/http-save/yehe-10642399/6c3bc3ab0aeeec7e4ab34c4ed58dcb2e.png)
+![OpenSpec 质量保障信息图封面](images/6c3bc3ab0aeeec7e4ab34c4ed58dcb2e.png)
 
 用 AI 编程助手写代码，质量怎么保障？这是一个越来越重要的问题。
 

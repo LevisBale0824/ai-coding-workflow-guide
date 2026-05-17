@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：Superpowers 和 PlanningWithFiles 双系统碰撞](https://developer.qcloudimg.com/http-save/10642399/49b87c5ca54774a6175ae333fb24aa85.png)
+![封面图：Superpowers 和 PlanningWithFiles 双系统碰撞](images/49b87c5ca54774a6175ae333fb24aa85.png)
 
 封面图：Superpowers 和 PlanningWithFiles 双系统碰撞
 
@@ -59,7 +59,7 @@ PlanningWithFiles 配了 4 个生命周期钩子：
 - __Hash Attestation__（v2.37.0）：SHA-256 哈希锁定 task_plan.md，防止内容被篡改或注入
 - __并行计划__（v2.36.0）：`.planning/YYYY-MM-DD-<slug>/` 目录隔离，支持多个计划并行推进
 
-![PlanningWithFiles 三文件工作流示意图](https://developer.qcloudimg.com/http-save/10642399/87e04de4eacca63cab309bfbeb1f6c39.png)
+![PlanningWithFiles 三文件工作流示意图](images/87e04de4eacca63cab309bfbeb1f6c39.png)
 
 PlanningWithFiles 三文件工作流示意图
 
@@ -98,7 +98,7 @@ Superpowers 有个 `using-superpowers` skill，要求 agent 在任何行动前__
 
 它的审查机制是双阶段的：先是 spec compliance（规格合规），再是 code quality（代码质量）。写完代码不是终点，还得过两道审查关。
 
-![Superpowers 7 步工作流全景图](https://developer.qcloudimg.com/http-save/10642399/8653fb5339ba6f46f2e3a3b4cc37e191.png)
+![Superpowers 7 步工作流全景图](images/8653fb5339ba6f46f2e3a3b4cc37e191.png)
 
 Superpowers 7 步工作流全景图
 
@@ -170,7 +170,7 @@ __writing-plans 不会以 PwF 的 task_plan 为骨架__ - 它有自己的结构�
 
 #### 冲突全景图
 
-![4 个冲突点对比图](https://developer.qcloudimg.com/http-save/10642399/9a83025843e3a18f6445f1abf5abfc83.png)
+![4 个冲突点对比图](images/9a83025843e3a18f6445f1abf5abfc83.png)
 
 4 个冲突点对比图
 
@@ -290,7 +290,7 @@ Verify: `pytest tests/models/test_user.py -v`
 8. session 恢复 → PwF 的 hook 自动注入进度，Superpowers 读取 plan 继续
 ```
 
-![协同方案架构图](https://developer.qcloudimg.com/http-save/10642399/76b9e6376bff7f910e7af6a1d6d4b804.png)
+![协同方案架构图](images/76b9e6376bff7f910e7af6a1d6d4b804.png)
 
 协同方案架构图
 

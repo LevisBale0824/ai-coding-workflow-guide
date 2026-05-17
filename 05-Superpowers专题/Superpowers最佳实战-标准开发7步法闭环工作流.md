@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: Superpowers 全景信息图](https://developer.qcloudimg.com/http-save/10642399/d195c18c0de492370923f66c14a72a2f.png)
+![Image 1: Superpowers 全景信息图](images/d195c18c0de492370923f66c14a72a2f.png)
 
 Superpowers 全景信息图
 
@@ -43,7 +43,7 @@ Agent 学到的第一条规矩：__如果你有 skill 来做某事，你必须�
 
 ### 二、14 个 Skills 构成的闭环工作流
 
-![Image 2: Superpowers 三层架构图](https://developer.qcloudimg.com/http-save/10642399/f3a709a9fe478145816c5ea8ea1cd2e3.png)
+![Image 2: Superpowers 三层架构图](images/f3a709a9fe478145816c5ea8ea1cd2e3.png)
 
 Superpowers 三层架构图
 
@@ -243,7 +243,7 @@ Task 3: 并发控制 — 乐观锁实现
 
 #### 3.5 TDD 闭环 — 没有测试就不准写代码
 
-![Image 3: TDD 循环流程图](https://developer.qcloudimg.com/http-save/10642399/d0aa5cc03555fd7577354e11bd7ffa41.png)
+![Image 3: TDD 循环流程图](images/d0aa5cc03555fd7577354e11bd7ffa41.png)
 
 TDD 循环流程图
 
@@ -423,7 +423,7 @@ VERIFY   → 确认结果符合预期
 
 ### 四、效果对比：有纪律 vs 无纪律
 
-![Image 4: 有纪律 vs 无纪律对比图](https://developer.qcloudimg.com/http-save/10642399/90981087678e7ccf44b2cbf6b1721337.png)
+![Image 4: 有纪律 vs 无纪律对比图](images/90981087678e7ccf44b2cbf6b1721337.png)
 
 有纪律 vs 无纪律对比图
 

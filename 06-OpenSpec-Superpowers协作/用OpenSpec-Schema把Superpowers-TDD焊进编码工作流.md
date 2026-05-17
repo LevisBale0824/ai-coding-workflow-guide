@@ -5,7 +5,7 @@
 > 我是__术哥__，一名专注于 AI 编程、AI 智能体、Agent Skills、MCP、云原生、AIOps、Milvus 向量数据库的__技术实践者与开源布道者__！
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：OpenSpec Schema + Superpowers TDD 工作流示意图](https://developer.qcloudimg.com/http-save/10642399/730792113a26a9a3703656f4544e14d0.png)
+![封面图：OpenSpec Schema + Superpowers TDD 工作流示意图](images/730792113a26a9a3703656f4544e14d0.png)
 
 _图 1：OpenSpec Schema + Superpowers TDD 工作流示意图_
 
@@ -88,7 +88,7 @@ __三个核心注入点__：
 
 注入的叠加顺序是 `context → rules → instruction → template`。也就是说，AI 收到的 prompt 里先有项目背景，再有针对当前 artifact 的规则，再有 schema 里的指令，最后是模板骨架。四层叠加，越靠后越具体。
 
-![配图：OpenSpec 四层注入机制示意图](https://developer.qcloudimg.com/http-save/10642399/6afc023b50a18484fc16f6d53b13de0a.png)
+![配图：OpenSpec 四层注入机制示意图](images/6afc023b50a18484fc16f6d53b13de0a.png)
 
 _图 2：context → rules → instruction → template 四层叠加机制_
 
@@ -388,7 +388,7 @@ openspec status
 | 是否有 plans | 没有 | 有，包含 TDD 微步骤 |
 | apply 的前置条件 | tasks | plans（比 tasks 多一层细化） |
 
-![配图：内置 schema vs 自定义 tdd-driven schema 对比](https://developer.qcloudimg.com/http-save/10642399/8046dd6471998434e8f29ec1917110d3.png)
+![配图：内置 schema vs 自定义 tdd-driven schema 对比](images/8046dd6471998434e8f29ec1917110d3.png)
 
 _图 3：内置 spec-driven vs 自定义 tdd-driven 六维度对比_
 
@@ -489,7 +489,7 @@ openspec instructions specs --change todo-crud --json
 
 这__不是__严格的 TDD RED-GREEN-REFACTOR 循环。AI 没有先写一个失败测试、运行确认失败、再写最小实现。它更像是一次性写完再用测试验证。
 
-![配图：理想 TDD 循环 vs 实际 AI 执行对比](https://developer.qcloudimg.com/http-save/10642399/5c5f0ae7e048012084185b4290f6d2ed.png)
+![配图：理想 TDD 循环 vs 实际 AI 执行对比](images/5c5f0ae7e048012084185b4290f6d2ed.png)
 
 _图 4：理想 TDD RED-GREEN-REFACTOR 循环 vs 实际 AI 线性执行_
 

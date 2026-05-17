@@ -5,7 +5,7 @@
 > 我是__术哥__，一名专注于 AI 编程、AI 智能体、Agent Skills、MCP、云原生、AIOps、Milvus 向量数据库的__技术实践者与开源布道者__！
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：OpenSpec 与 Superpowers 协作流程全景](https://developer.qcloudimg.com/http-save/10642399/508a203e8a1c5e99bd0dae6e354cfc4b.png)
+![封面图：OpenSpec 与 Superpowers 协作流程全景](images/508a203e8a1c5e99bd0dae6e354cfc4b.png)
 
 _图 1：OpenSpec 与 Superpowers 协作全景_
 
@@ -215,7 +215,7 @@ OpenSpec 的 4 个工件形成有向无环图（DAG）：
 
 proposal 是根节点，定义了意图；specs 和 design 都依赖 proposal，分别描述"系统应该怎么表现"和"技术上怎么实现"；tasks 同时依赖 specs 和 design，是最终的实现清单。
 
-![配图：OpenSpec 4 个工件依赖关系（proposal → specs + design → tasks）](https://developer.qcloudimg.com/http-save/10642399/70651e53e7bb72d9ab2ec65ddf0c58ad.png)
+![配图：OpenSpec 4 个工件依赖关系（proposal → specs + design → tasks）](images/70651e53e7bb72d9ab2ec65ddf0c58ad.png)
 
 _图 2：OpenSpec 工件依赖关系图（DAG）_
 
@@ -302,7 +302,7 @@ subagent-driven-development
 - __不要__在规格合规通过前启动代码质量审查
 - 子代理不继承主会话上下文，控制器提供完整信息
 
-![配图：子代理驱动开发的完整审查流程](https://developer.qcloudimg.com/http-save/10642399/b1df95545f09e281893916522a1e7008.png)
+![配图：子代理驱动开发的完整审查流程](images/b1df95545f09e281893916522a1e7008.png)
 
 _图 3：子代理驱动开发审查流程_
 
@@ -335,7 +335,7 @@ __衔接点 3：tasks.md → plan 的映射不成立（断裂）__
 
 前面 3.2 节已经说了——writing-plans 有自己的任务组织逻辑，不会以 OpenSpec tasks.md 为骨架。plan 中每个步骤的验收标准也不是来自 OpenSpec specs/。
 
-![配图：协作衔接点实测结果汇总](https://developer.qcloudimg.com/http-save/10642399/33256b45b66abcfb26aa3aef5c82fe6c.png)
+![配图：协作衔接点实测结果汇总](images/33256b45b66abcfb26aa3aef5c82fe6c.png)
 
 _图 4：衔接点实测结果（4 可行 + 4 断裂 + 1 未验证）_
 

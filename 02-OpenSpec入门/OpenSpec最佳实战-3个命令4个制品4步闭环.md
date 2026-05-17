@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: OpenSpec 增量开发工作流概览](https://developer.qcloudimg.com/http-save/10642399/f71230dab37eb048e0b4ef7b61e60027.png)
+![Image 1: OpenSpec 增量开发工作流概览](images/f71230dab37eb048e0b4ef7b61e60027.png)
 
 OpenSpec 增量开发工作流概览
 
@@ -186,7 +186,7 @@ Copy from existing spec:
 | 审查范围 | 整个系统行为 | 只看变化部分 |
 | 主规范状态 | 空 → 有内容 | 有内容 → 更新 |
 
-![Image 2: 首次变更 vs 增量变更 Delta Specs 对比](https://developer.qcloudimg.com/http-save/10642399/081678e859197cb76e3d248b91e3d7b1.png)
+![Image 2: 首次变更 vs 增量变更 Delta Specs 对比](images/081678e859197cb76e3d248b91e3d7b1.png)
 
 首次变更 vs 增量变更 Delta Specs 对比
 
@@ -441,7 +441,7 @@ openspec/changes/add-todo-priority/
 
 ✅ 检查 `openspec/specs/` 目录，确认主规范状态（可能已合并，也可能需要手动合并）
 
-![Image 3: 归档前后目录结构对比](https://developer.qcloudimg.com/http-save/10642399/abf18916203e102765efd64d6dcd0e9d.png)
+![Image 3: 归档前后目录结构对比](images/abf18916203e102765efd64d6dcd0e9d.png)
 
 归档前后目录结构对比
 
@@ -471,7 +471,7 @@ _图 4：归档前后目录结构对比_
 
 这就是它和"纯提示"模式的根本区别。纯提示模式下，AI 不知道系统当前是什么状态，每次都得从头解释。而 OpenSpec 的 `specs/` 目录就是项目的__持久化上下文__——AI 读到主规范就知道系统现在是什么样，读到 Delta Specs 就知道你要改成什么样。
 
-![Image 4: 增量开发四步流程](https://developer.qcloudimg.com/http-save/10642399/8b92db8593c3b077317cc9bc3d5df079.png)
+![Image 4: 增量开发四步流程](images/8b92db8593c3b077317cc9bc3d5df079.png)
 
 增量开发四步流程
 

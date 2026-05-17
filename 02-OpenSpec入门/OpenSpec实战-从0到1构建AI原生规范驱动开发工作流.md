@@ -6,7 +6,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![OpenSpec 实战信息图封面](https://developer.qcloudimg.com/http-save/yehe-10642399/1b6c52e9a4b8bfa5fa6d34e0b3e1c834.png)
+![OpenSpec 实战信息图封面](images/1b6c52e9a4b8bfa5fa6d34e0b3e1c834.png)
 
 前面几篇文章我们深入解析了 OpenSpec 的架构设计、质量保障体系以及和 Superpowers 的对比。这篇文章进入实战模式，手把手教你从零搭建一个完整的 OpenSpec 工作流，以 Claude Code 为例。
 

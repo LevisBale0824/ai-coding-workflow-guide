@@ -6,7 +6,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![OpenSpec 信息图封面](https://developer.qcloudimg.com/http-save/yehe-10642399/ffe20476f6e83b97a4bea5e65fee4802.png)
+![OpenSpec 信息图封面](images/ffe20476f6e83b97a4bea5e65fee4802.png)
 
 用 AI 编程助手写代码时，你可能遇到过这些问题：需求散落在聊天记录里，退出会话就找不到了；每次生成的代码都不一样，难以复现和追溯；团队协作时，其他人不知道 AI 到底改了什么。
 
@@ -26,7 +26,7 @@ GitHub 上这个项目有 34,900+ Stars，用 TypeScript 写成（98.7% 代码�
 
 ### **2. 底层架构：三层设计**
 
-![OpenSpec 三层架构图](https://developer.qcloudimg.com/http-save/yehe-10642399/e24298f5f9e91f6cec74f0b41e5307c9.png)
+![OpenSpec 三层架构图](images/e24298f5f9e91f6cec74f0b41e5307c9.png)
 
 OpenSpec 的架构分成三层，每层有明确的职责边界：
 
@@ -142,7 +142,7 @@ OpenSpec 定义了四种核心文件格式，每种都有明确的用途。
 **Migration**: 使用新端点 /api/v2/export
 ```
 
-![Delta Spec 操作机制图](https://developer.qcloudimg.com/http-save/yehe-10642399/ad80d78ba7db6a0e4fe28832ea7d5129.png)
+![Delta Spec 操作机制图](images/ad80d78ba7db6a0e4fe28832ea7d5129.png)
 
 四种操作语义：
 
@@ -216,7 +216,7 @@ Artifact Graph 引擎会根据 `requires` 字段计算拓扑排序，确定文�
 
 ### **4. 验证引擎与类型系统**
 
-![验证引擎三层结构图](https://developer.qcloudimg.com/http-save/yehe-10642399/7c3d406d97de20b15ceb40a896a473eb.png)
+![验证引擎三层结构图](images/7c3d406d97de20b15ceb40a896a473eb.png)
 
 OpenSpec 的质量保障通过验证引擎和类型系统实现。
 
@@ -451,7 +451,7 @@ AI：验证实现是否符合文档...
 
 Extended Profile 的优势在于每个阶段都可以审查和迭代，适合团队协作场景。
 
-![Extended Profile 工作流图](https://developer.qcloudimg.com/http-save/yehe-10642399/1e3627f49aeab08b7fcfd8c6fb3e99c0.png)
+![Extended Profile 工作流图](images/1e3627f49aeab08b7fcfd8c6fb3e99c0.png)
 
 ### **6. 核心模块解析**
 

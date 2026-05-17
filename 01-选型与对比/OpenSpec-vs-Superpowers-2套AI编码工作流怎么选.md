@@ -6,7 +6,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![封面图](https://developer.qcloudimg.com/http-save/yehe-10642399/3f0c1342fb67235c5c477c18e93a5f3a.png)
+![封面图](images/3f0c1342fb67235c5c477c18e93a5f3a.png)
 
 用 AI 编码工具做项目，你大概率踩过这样的坑：让 Claude Code 帮你重构一个模块，它改着改着就忘了之前定的方案；或者让 Cursor 写个新功能，它一顿操作猛如虎，结果测试全挂。
 
@@ -112,7 +112,7 @@ openspec templates --json
 - 没有并行变更的冲突解决机制
 - 没有 Web UI，纯命令行操作
 
-![OpenSpec 架构图](https://developer.qcloudimg.com/http-save/yehe-10642399/e983a8559b8b170d52ed0d8f59ae0ccf.png)
+![OpenSpec 架构图](images/e983a8559b8b170d52ed0d8f59ae0ccf.png)
 
 ### **2. Superpowers：给 AI 编码加上「行为纪律」**
 
@@ -168,7 +168,7 @@ Superpowers 目前支持 5 个平台：Claude Code、Cursor、Codex、OpenCode�
 - **无程序化强制执行** - 说到底还是靠说服 AI，不是硬约束
 - **子 Agent 功能依赖平台支持** - 不是所有 AI 工具都支持派遣子 Agent
 
-![Superpowers 技能管道流程图](https://developer.qcloudimg.com/http-save/yehe-10642399/2c5d3cdf75d72cb1aa9f13af3c2324e4.png)
+![Superpowers 技能管道流程图](images/2c5d3cdf75d72cb1aa9f13af3c2324e4.png)
 
 ### **3. 三种场景，三套方案**
 
@@ -220,7 +220,7 @@ Superpowers 目前支持 5 个平台：Claude Code、Cursor、Codex、OpenCode�
 - 用 TDD 技能确保所有代码都有测试覆盖
 - 用代码审查技能统一团队的代码质量标准
 
-![选型决策树](https://developer.qcloudimg.com/http-save/yehe-10642399/d4da871d19a6d3b68e0bc0563615cf31.png)
+![选型决策树](images/d4da871d19a6d3b68e0bc0563615cf31.png)
 
 ### **4. OpenSpec + Superpowers 组合实战方案**
 
@@ -265,7 +265,7 @@ OpenSpec 验证引擎 → 检查实现是否满足规格
 Superpowers 验证技能 → 提供测试通过的证据
 ```
 
-![组合方案架构图](https://developer.qcloudimg.com/http-save/yehe-10642399/1303d88ba25607be954e3f0509fe20dc.png)
+![组合方案架构图](images/1303d88ba25607be954e3f0509fe20dc.png)
 
 ### **5. 快速选型决策表**
 

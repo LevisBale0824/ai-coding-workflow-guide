@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: OpenSpec 工作流程概览](https://developer.qcloudimg.com/http-save/10642399/b84a3a67865747930b6a865c1890eb00.png)
+![Image 1: OpenSpec 工作流程概览](images/b84a3a67865747930b6a865c1890eb00.png)
 
 OpenSpec 工作流程概览
 
@@ -151,7 +151,7 @@ openspec/
 
 到这里，基础环境就算搭好了。接下来就是核心操作。
 
-![Image 2: 初始化后的目录结构](https://developer.qcloudimg.com/http-save/10642399/0bf8c5ae5d9fe0ff396fd55e83b1db0e.png)
+![Image 2: 初始化后的目录结构](images/0bf8c5ae5d9fe0ff396fd55e83b1db0e.png)
 
 初始化后的目录结构
 
@@ -259,7 +259,7 @@ The system MUST provide RESTful endpoints for...
 
 这也是 OpenSpec 和其他重型规范框架的区别 - 社区里有人评价说：__OpenSpec 像一位敏捷的工程师，追求快速迭代和极简主义__，和 Spec-Kit 那种严谨架构师风格不太一样。
 
-![Image 3: propose 生成的 4 个制品及其关系](https://developer.qcloudimg.com/http-save/10642399/fd0f3bde04b39a1e2b043937222c10b4.png)
+![Image 3: propose 生成的 4 个制品及其关系](images/fd0f3bde04b39a1e2b043937222c10b4.png)
 
 propose 生成的 4 个制品及其关系
 
@@ -365,7 +365,7 @@ openspec/changes/
 
 再看 `openspec/specs/` 目录：对于首次变更，归档输出 `Specs: No delta specs`，意味着 specs/ 可能不会立即有内容。别担心，这是正常的 - 主规范会在后续迭代中逐步积累。每次新的变更归档时，如果有 Delta Specs 需要合并，OpenSpec 会自动处理。
 
-![Image 4: 归档前后目录结构对比](https://developer.qcloudimg.com/http-save/10642399/29019900a5bb2f53b152f4b9e561d716.png)
+![Image 4: 归档前后目录结构对比](images/29019900a5bb2f53b152f4b9e561d716.png)
 
 归档前后目录结构对比
 
@@ -385,7 +385,7 @@ CSDN 上有个实战用户说得挺好：__这个项目很有价值的应该是�
 
 ✅ 归档目录名包含日期前缀，格式为 `YYYY-MM-DD-<change-name>`
 
-![Image 5: OpenSpec 迭代工作流](https://developer.qcloudimg.com/http-save/10642399/1920836f6414cccaba0ae371ed3185bf.png)
+![Image 5: OpenSpec 迭代工作流](images/1920836f6414cccaba0ae371ed3185bf.png)
 
 OpenSpec 迭代工作流
 

@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: 封面图](https://developer.qcloudimg.com/http-save/10642399/56ddada8bca75a89de41a359b96c745e.png)
+![Image 1: 封面图](images/56ddada8bca75a89de41a359b96c745e.png)
 
 封面图
 
@@ -22,7 +22,7 @@ __OpenSpec 负责锁定你的设计意图，__把模糊的想法翻译成结构�
 
 ### 一、两把武器，各自管什么
 
-![Image 2: 联动流程图](https://developer.qcloudimg.com/http-save/10642399/9dd6e5d52edc0dbdff7203396c4432fd.png)
+![Image 2: 联动流程图](images/9dd6e5d52edc0dbdff7203396c4432fd.png)
 
 联动流程图
 
@@ -104,7 +104,7 @@ Superpowers（v5.0.7）做的是__测试驱动执行__。它不是让 AI 直接�
 
 ### 二、实战一：从 0 到 1 搭建基础看板
 
-![Image 3: 看板系统效果图](https://developer.qcloudimg.com/http-save/10642399/a43fd4c0c8ff755389b5bdc350306295.png)
+![Image 3: 看板系统效果图](images/a43fd4c0c8ff755389b5bdc350306295.png)
 
 看板系统效果图
 
@@ -523,7 +523,7 @@ func (h *ColumnHandler) List(w http.ResponseWriter, r *http.Request) {
 
 每个任务完成后，Spec Compliance Reviewer 会逐行对比代码和 Superpowers 自己的实现计划是否一致。通过后，Code Quality Reviewer 再审一轮代码质量。两轮审查都过了，这个任务才算完成。
 
-![Image 4: TDD 循环图](https://developer.qcloudimg.com/http-save/10642399/d56fbe0216b385140240a8f49bbb59c5.png)
+![Image 4: TDD 循环图](images/d56fbe0216b385140240a8f49bbb59c5.png)
 
 TDD 循环图
 
@@ -764,7 +764,7 @@ func TestCreateTaskWithPriority(t *testing.T) {
 
 archive 命令会提示：增量 specs 还没有同步到主 specs，是否现在同步？选择是——delta specs 合并到 `openspec/specs/`，变更文件夹移动到 `openspec/changes/archive/` 目录。下一轮迭代又可以开始了。
 
-![Image 5: 增量迭代对比图](https://developer.qcloudimg.com/http-save/10642399/ce577d44ee80b3425a577ddf010e0354.png)
+![Image 5: 增量迭代对比图](images/ce577d44ee80b3425a577ddf010e0354.png)
 
 增量迭代对比图
 

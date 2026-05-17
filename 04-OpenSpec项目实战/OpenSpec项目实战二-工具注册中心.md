@@ -5,7 +5,7 @@
 > 我是**术哥**，一名专注于 AI 编程、AI 智能体、Agent Skills、MCP、云原生、AIOps、Milvus 向量数据库的**技术实践者与开源布道者**！
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![封面图 - 工具注册中心架构示意](https://developer.qcloudimg.com/http-save/10642399/f3277ff28046abdd915a4c6630f05cc2.png)
+![封面图 - 工具注册中心架构示意](images/f3277ff28046abdd915a4c6630f05cc2.png)
 
 > **说明**：本文内容基于 OpenSpec（Fission-AI/OpenSpec）v1.3.1 和 React 19 + TypeScript + Vite 的实际操作记录整理而成，所有命令和代码均在 shuge AI Toolbox 项目中实际验证。
 

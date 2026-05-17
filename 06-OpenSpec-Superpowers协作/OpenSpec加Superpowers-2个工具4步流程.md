@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：OpenSpec 与 Superpowers 协同工作流概念图](https://developer.qcloudimg.com/http-save/10642399/e676522036d330b7def21dbb6e1f8f81.png)
+![封面图：OpenSpec 与 Superpowers 协同工作流概念图](images/e676522036d330b7def21dbb6e1f8f81.png)
 
 _图 1：OpenSpec + Superpowers 协同工作流全景_
 
@@ -74,7 +74,7 @@ Superpowers 号称零依赖，不依赖任何第三方工具或库。这个设�
 
 OpenSpec 走了一条完全不同的路：__不依赖 prompt 约束 LLM 的行为，而是用结构化规格约束要构建什么这件事本身__。
 
-![OpenSpec 四层架构图](https://developer.qcloudimg.com/http-save/10642399/9a6c6d92bde177e314abf1806e004b2b.png)
+![OpenSpec 四层架构图](images/9a6c6d92bde177e314abf1806e004b2b.png)
 
 _图 2：OpenSpec 内部架构——从 CLI 到 Core 的分层结构与数据流_
 
@@ -125,7 +125,7 @@ OpenSpec 使用 Delta Spec 管理规格变更，格式固定为：
 
 把两个工具放在一起看，互补关系非常清晰。
 
-![OpenSpec 与 Superpowers 互补关系对比图](https://developer.qcloudimg.com/http-save/10642399/13c3379a012b8cdfd9292c173e763e12.png)
+![OpenSpec 与 Superpowers 互补关系对比图](images/13c3379a012b8cdfd9292c173e763e12.png)
 
 _图 3：OpenSpec（定义质量）与 Superpowers（执行质量）的六维互补关系_
 
@@ -161,7 +161,7 @@ __Superpowers 弥补 OpenSpec 的 3 个短板：__
 
 理论讲完了，具体怎么在项目里用起来？这里给出一套经过验证的 4 步工作流。
 
-![4 步工作流流程图](https://developer.qcloudimg.com/http-save/10642399/9ebc89d23b1b112df1b76cfb3875e3ab.png)
+![4 步工作流流程图](images/9ebc89d23b1b112df1b76cfb3875e3ab.png)
 
 _图 4：OpenSpec + Superpowers 四步闭环工作流——从定义规格到验证归档_
 

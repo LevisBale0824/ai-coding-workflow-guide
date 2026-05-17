@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：OpenSpec + Superpowers 6 步工作流概念图](https://developer.qcloudimg.com/http-save/10642399/3e1f24f49875b8e0dfc6d9dbb314a96d.png)
+![封面图：OpenSpec + Superpowers 6 步工作流概念图](images/3e1f24f49875b8e0dfc6d9dbb314a96d.png)
 
 _图 1：OpenSpec + Superpowers 6 步闭环——规格驱动 TDD 实战全景_
 

@@ -10,7 +10,7 @@ OpenSpec 0.2.0 来了！这次是个大版本更新，带来了 Delta 规范的�
 
 > 补充说明：OpenSpec 0.2.0 已升级为 0.3.0，本文以 0.2.0 版本为基础讲解核心功能和架构，实际使用时请参考最新版本。
 
-![OpenSpec 0.2.0 发布信息图](https://developer.qcloudimg.com/http-save/yehe-10642399/7e393ce4e9df0b1e1aa6cd4db93dbda9.png)
+![OpenSpec 0.2.0 发布信息图](images/7e393ce4e9df0b1e1aa6cd4db93dbda9.png)
 
 ### **1. 版本升级概览：从 0.1.0 到 0.2.0**
 

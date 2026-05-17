@@ -8,7 +8,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![封面图：三轮实验对比信息图](https://developer.qcloudimg.com/http-save/10642399/75bc4a02643fee8d40066a45a10e5884.png)
+![封面图：三轮实验对比信息图](images/75bc4a02643fee8d40066a45a10e5884.png)
 
 _图 1：三轮实验全貌——从裸跑到结构化门控_
 
@@ -421,7 +421,7 @@ artifacts:
 - tasks 的 `requires` 从默认的 `[specs, design]` 改为 `[review]`，形成 `proposal → specs → design → review → tasks` 的依赖链
 - 没有在 schema 中写死 `tracks` - 进度追踪由 `apply` 阶段负责
 
-![自定义 Schema 架构对比图](https://developer.qcloudimg.com/http-save/10642399/b3b04ef1711379d59e080dca22eabd7f.png)
+![自定义 Schema 架构对比图](images/b3b04ef1711379d59e080dca22eabd7f.png)
 
 _图 2：默认 Schema vs 自定义 Schema——review 工件插入 design 和 tasks 之间_
 
@@ -571,7 +571,7 @@ All five dimensions pass. The change is well-scoped with clear requirements and 
 
 Lab 3 的核心优势：review 工件在 design 和 tasks 之间插了一个**结构化的检查点**。这不是依赖 AI 的自觉性（请记得检查边界条件），而是通过 schema 的依赖关系**强制执行** - 没有 review，tasks 就不会开始生成。
 
-![三轮实验工作流程对比图](https://developer.qcloudimg.com/http-save/10642399/b794ec7d39711f02ab615e3cc6b6f941.png)
+![三轮实验工作流程对比图](images/b794ec7d39711f02ab615e3cc6b6f941.png)
 
 _图 3：三轮实验工作流对比——从裸跑到结构化门控的递进_
 
@@ -589,7 +589,7 @@ _图 3：三轮实验工作流对比——从裸跑到结构化门控的递进_
 | 4 | 引入 TDD 思路 | ✅ **有效** | config.yaml 的 rules 强制测试任务配对 | Rules + review 工件双保险 |
 | 5 | Archive 前设质量门控 | ✅ **有效** | 自定义 Schema 的依赖链 + review 工件充当门控 | review 作为 tasks 的前置依赖 |
 
-![五维验证结论矩阵图](https://developer.qcloudimg.com/http-save/10642399/0a64121410ee8edab711bdf87f4cf360.png)
+![五维验证结论矩阵图](images/0a64121410ee8edab711bdf87f4cf360.png)
 
 _图 4：5 个升级方向验证结论——4 个有效，1 个需要外部工具_
 

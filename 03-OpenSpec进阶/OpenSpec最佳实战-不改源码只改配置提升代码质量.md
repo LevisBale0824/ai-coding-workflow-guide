@@ -8,7 +8,7 @@
 >
 > **Talk is cheap, let's explore。无界探索，有术而行。**
 
-![封面图 - 信息图风格：任务粒度 = 代码质量杠杆](https://developer.qcloudimg.com/http-save/10642399/27b9e4ff9f7235d8fa4704bf63e72601.png)
+![封面图 - 信息图风格：任务粒度 = 代码质量杠杆](images/27b9e4ff9f7235d8fa4704bf63e72601.png)
 
 _图 1：任务粒度——代码质量最大的杠杆_
 
@@ -69,7 +69,7 @@ test('无效邮箱格式返回 400', () => {
 
 每个 step 附了完整代码、运行命令、预期输出。AI 拿到这种 task 还能发挥什么？**照着做就行了**。
 
-![对比图：粗粒度任务 vs 细粒度任务的因果链](https://developer.qcloudimg.com/http-save/10642399/ff3fc9cfe16fc1049a5a9a9161dad814.png)
+![对比图：粗粒度任务 vs 细粒度任务的因果链](images/ff3fc9cfe16fc1049a5a9a9161dad814.png)
 
 _图 2：任务粒度对比——粗任务给 AI 留了发挥空间，细任务把空间压缩到零_
 
@@ -218,7 +218,7 @@ review 工件是个闸门：没有 review，tasks 就不会开始生成。审查
 > 完整 review instruction 见附件：`articles/attachments/review-instruction.yaml`
 > review 模板文件见附件：`articles/attachments/review-template.md`
 
-![三步配置流程图：config.yaml → schema fork + instruction → review 工件](https://developer.qcloudimg.com/http-save/10642399/98c9f519d88c6229254907b16145a5f9.png)
+![三步配置流程图：config.yaml → schema fork + instruction → review 工件](images/98c9f519d88c6229254907b16145a5f9.png)
 
 _图 3：三步配置——从上下文注入到指令升级再到自动审查_
 
@@ -269,7 +269,7 @@ verify 检查实现是否匹配 spec 意图。本质是文本层面的一致性�
 
 三步配置搭好之后，日常开发中其实有三层防线在工作。但它们的重要性不在一个量级。
 
-![三层防线示意图：源头控制（80%）→ 过程检查（15%）→ 收尾确认（5%）](https://developer.qcloudimg.com/http-save/10642399/1e2e7955a7877cdb404055ebe1e390a4.png)
+![三层防线示意图：源头控制（80%）→ 过程检查（15%）→ 收尾确认（5%）](images/1e2e7955a7877cdb404055ebe1e390a4.png)
 
 _图 4：三层防线——80% 的质量来自源头控制_
 

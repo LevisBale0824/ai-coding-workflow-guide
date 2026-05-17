@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![封面图：四层防护模型信息图](https://developer.qcloudimg.com/http-save/10642399/d9ed33284819773e13e1a35ce81c9305.png)
+![封面图：四层防护模型信息图](images/d9ed33284819773e13e1a35ce81c9305.png)
 
 _图 1：四层防护模型信息图_
 
@@ -66,7 +66,7 @@ __TDD skill 是 371 行的行为塑造文本__。包含 Iron Law、反合理化�
 
 但有一个关键事实：__两个仓库的核心代码互不依赖__。OpenSpec 核心代码（`src/`）里 0 个 `superpowers` 引用，Superpowers 源码里 0 个 `openspec` 引用。不过 OpenSpec 的 `docs/customization.md` 提到了 `superpowers-bridge` 社区 schema，说明官方已经注意到了集成方案。集成完全依赖社区 schema 的 `instruction` 文本桥接。
 
-![配图 1：v1 失败路径 vs v2 修正路径对比](https://developer.qcloudimg.com/http-save/10642399/324b4c1010228cb425eb56c4f06616d3.png)
+![配图 1：v1 失败路径 vs v2 修正路径对比](images/324b4c1010228cb425eb56c4f06616d3.png)
 
 _图 1：v1 失败路径 vs v2 修正路径对比_
 
@@ -123,7 +123,7 @@ __机制__：subagent 必须在报告中包含测试运行输出。
 
 这一层提供了可检查的硬证据。不看 AI 怎么说，看测试输出怎么说。
 
-![配图 2：四层防护模型架构图](https://developer.qcloudimg.com/http-save/10642399/e6d995385cada6b3e9ff6bbd38409e5d.png)
+![配图 2：四层防护模型架构图](images/e6d995385cada6b3e9ff6bbd38409e5d.png)
 
 _图 2：四层防护模型架构图——从内到外：原子化任务、subagent 隔离、两阶段审查、验证证据_
 
@@ -431,7 +431,7 @@ rules:
     - Must specify verify command and expected evidence
 ```
 
-![配图 3：Schema 四层防护映射图](https://developer.qcloudimg.com/http-save/10642399/f92e43b1c237fd58d52e6a729eabf845.png)
+![配图 3：Schema 四层防护映射图](images/f92e43b1c237fd58d52e6a729eabf845.png)
 
 _图 3：Schema 配置如何对应四层防护——左：Schema 工作流，右：四层防护映射_
 
@@ -601,7 +601,7 @@ npm test
 
 最终产物：`src/markdown.ts`（71 行）、`tests/markdown.test.ts`（43 行、10 个 test case），npm test 10/10 passed。
 
-![配图 4：验证执行时间线](https://developer.qcloudimg.com/http-save/10642399/9e4b540a487bedd6f169b62aba2b115d.png)
+![配图 4：验证执行时间线](images/9e4b540a487bedd6f169b62aba2b115d.png)
 
 _图 4：Mini Markdown 验证执行时间线——双轨展示 27 次 subagent dispatch 和 15 次 npm test 的 RED→GREEN 过渡_
 
@@ -687,7 +687,7 @@ v1 在 propose 阶段的文档规范化是有效的——WHEN/THEN、GIVEN/WHEN/
 
 当然，这个判断需要更多场景验证。如果你也试了这个 Schema，欢迎把验证结果反馈给我——成功了值得记录，失败了更有分析价值。
 
-![配图 5：实测对比评估图](https://developer.qcloudimg.com/http-save/10642399/d969cec7c7cac477c0e03d1ca09c7caf.png)
+![配图 5：实测对比评估图](images/d969cec7c7cac477c0e03d1ca09c7caf.png)
 
 _图 5：v1/v2 设计/v2 实测三方对比评估——5 个维度的演进与实测效果_
 

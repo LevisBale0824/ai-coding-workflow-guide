@@ -8,7 +8,7 @@
 >
 > __Talk is cheap, let's explore。无界探索，有术而行。__
 
-![Image 1: 封面图](https://developer.qcloudimg.com/http-save/10642399/5d2922569b7eb837a2b0d5a7825c88b6.png)
+![Image 1: 封面图](images/5d2922569b7eb837a2b0d5a7825c88b6.png)
 
 封面图
 
@@ -79,7 +79,7 @@ openspec init --tools all
 
 #### 目录结构
 
-![Image 2: 目录结构图](https://developer.qcloudimg.com/http-save/10642399/f77ec4e368f36ab4e6310a649f67c72b.png)
+![Image 2: 目录结构图](images/f77ec4e368f36ab4e6310a649f67c72b.png)
 
 目录结构图
 
@@ -110,7 +110,7 @@ openspec/
 
 ### 3. 工作流：3 条命令走天下
 
-![Image 3: 工作流程图](https://developer.qcloudimg.com/http-save/10642399/ed5c7780e9d535e759f1a2132dc8ebd3.png)
+![Image 3: 工作流程图](images/ed5c7780e9d535e759f1a2132dc8ebd3.png)
 
 工作流程图
 
@@ -220,7 +220,7 @@ The system MUST expire sessions after 15 minutes of inactivity.
 (Deprecated in favor of 2FA. Users should re-authenticate each session.)
 ```
 
-![Image 4: Delta Specs 概念图](https://developer.qcloudimg.com/http-save/10642399/bf7769447ba049ece8ac4e30939f0660.png)
+![Image 4: Delta Specs 概念图](images/bf7769447ba049ece8ac4e30939f0660.png)
 
 Delta Specs 概念图
 
@@ -376,7 +376,7 @@ openspec/
 
 ### 6. 归档机制深入理解
 
-![Image 5: 归档前后对比图](https://developer.qcloudimg.com/http-save/10642399/f38fdd38f8ea5890241be93def4327c5.png)
+![Image 5: 归档前后对比图](images/f38fdd38f8ea5890241be93def4327c5.png)
 
 归档前后对比图
 
