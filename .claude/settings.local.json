@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(do mkdir:*)",
+      "Bash(/tmp/download_images.sh:*)",
+      "Bash(rm:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(start:*)",
+      "Bash(git:*)"
+    ]
+  }
+}
