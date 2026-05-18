@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SDD 开发模式</title>
+
+<!-- Fonts: Clash Display + Satoshi (Fontshare) + Noto Sans SC (Google) -->
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+<style>
+/* ===========================================
+     CSS CUSTOM PROPERTIES (TECH THEME)
+     =========================================== */
+:root {
+  /* Colors */
+  --bg-primary: #080c14;
+  --bg-secondary: #0f1724;
+  --bg-card: #131b2e;
+  --bg-card-hover: #182238;
+  --text-primary: #e8edf5;
+  --text-secondary: #7b8ba3;
+  --text-muted: #4a5568;
+  --accent-cyan: #00e5ff;
+  --accent-orange: #ff6b35;
+  --accent-violet: #a78bfa;
+  --accent-teal: #2dd4bf;
+  --glow-cyan: rgba(0, 229, 255, 0.25);
+  --glow-orange: rgba(255, 107, 53, 0.2);
+  --border-subtle: rgba(0, 229, 255, 0.1);
+  --border-accent: rgba(0, 229, 255, 0.3);
+
+  /* Typography — MUST use clamp() */
+  --font-display: "Clash Display", "Noto Sans SC", sans-serif;
+  --font-body: "Satoshi", "Noto Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --title-size: clamp(1.8rem, 5vw, 3.8rem);
+  --h2-size: clamp(1.2rem, 3vw, 2.2rem);
+  --h3-size: clamp(0.95rem, 2vw, 1.4rem);
+  --body-size: clamp(0.85rem, 1.6vw, 1.15rem);
+  --small-size: clamp(0.7rem, 1.1vw, 0.95rem);
+  --label-size: clamp(0.65rem, 0.95vw, 0.82rem);
+
+  /* Spacing */
+  --slide-padding: clamp(1.5rem, 4vw, 4rem);
+  --content-gap: clamp(0.6rem, 2vw, 1.8rem);
+  --element-gap: clamp(0.3rem, 1vw, 0.8rem);
+
+  /* Animation */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-normal: 0.6s;
+  --duration-fast: 0.35s;
+}
+
+/* ===========================================
+     BASE STYLES
+     =========================================== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; overflow-x: hidden; }
+
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===========================================
+     VIEWPORT FITTING (from viewport-base.css)
+     =========================================== */
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%;
+  overflow: hidden;
+  padding: var(--slide-padding);
+}
+
+.card, .container, .content-box {
+  max-width: min(90vw, 1000px);
+  max-height: min(80vh, 700px);
+}
+
+.feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+.feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.5; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+img, .image-container {
+  max-width: 100%;
+  max-height: min(50vh, 400px);
+  object-fit: contain;
+}
+
+/* ===========================================
+     BACKGROUND EFFECTS
+     =========================================== */
+/* Grid pattern overlay */
+.slide::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient glow accents */
+.slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 90%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 10%, rgba(167, 139, 250, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide-content { position: relative; z-index: 1; }
+
+/* ===========================================
+     SLIDE TYPES
+     =========================================== */
+
+/* --- Section divider slides --- */
+.section-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.section-slide::after {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 107, 53, 0.06) 0%, transparent 40%);
+}
+.section-ep {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--accent-cyan);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: var(--element-gap);
+  display: inline-block;
+  padding: clamp(2px, 0.3vw, 6px) clamp(8px, 1vw, 16px);
+  border: 1px solid var(--border-accent);
+  border-radius: 2px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--element-gap);
+}
+.section-sub {
+  font-size: clamp(0.95rem, 1.7vw, 1.25rem);
+  color: var(--text-secondary);
+  max-width: min(80vw, 600px);
+}
+
+/* --- Title slide --- */
+.title-slide {
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--slide-padding);
+}
+.title-slide::after {
+  background:
+    radial-gradient(ellipse at 30% 70%, rgba(0, 229, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 40%);
+}
+.title-label {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--accent-cyan);
+  letter-spacing: 0.25em;
+  margin-bottom: var(--element-gap);
+}
+.title-main {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: var(--content-gap);
+}
+.title-sub {
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  color: var(--text-secondary);
+  max-width: min(85vw, 550px);
+  line-height: 1.6;
+}
+
+/* --- Content slides --- */
+.slide-tag {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--accent-orange);
+  letter-spacing: 0.15em;
+  margin-bottom: var(--element-gap);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.slide-tag::before {
+  content: "";
+  width: clamp(12px, 1.5vw, 20px);
+  height: 2px;
+  background: var(--accent-orange);
+}
+.slide-heading {
+  font-family: var(--font-display);
+  font-size: var(--h2-size);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: var(--content-gap);
+  padding-bottom: clamp(6px, 0.8vw, 12px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.content-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 0.8vw, 0.7rem);
+}
+.content-list li {
+  font-size: var(--body-size);
+  line-height: 1.6;
+  color: var(--text-primary);
+  padding-left: clamp(12px, 1.2vw, 18px);
+  position: relative;
+}
+.content-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: clamp(5px, 0.6vw, 8px);
+  width: 5px;
+  height: 5px;
+  background: var(--accent-cyan);
+  border-radius: 1px;
+  transform: rotate(45deg);
+  box-shadow: 0 0 6px var(--glow-cyan);
+}
+.content-list li strong { color: var(--accent-cyan); font-weight: 500; }
+
+/* --- Compare slides (two columns) --- */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(0.8rem, 2vw, 1.5rem);
+  margin-top: var(--content-gap);
+}
+.compare-col {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: clamp(0.8rem, 1.5vw, 1.2rem);
+}
+.compare-col.negative { border-color: rgba(255, 107, 53, 0.2); }
+.compare-col.positive { border-color: rgba(0, 229, 255, 0.2); }
+.compare-label {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  letter-spacing: 0.1em;
+  margin-bottom: clamp(6px, 0.8vw, 10px);
+  padding-bottom: clamp(4px, 0.5vw, 8px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.compare-col.negative .compare-label { color: var(--accent-orange); }
+.compare-col.positive .compare-label { color: var(--accent-cyan); }
+.compare-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.3rem, 0.6vw, 0.5rem);
+}
+.compare-col ul li {
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding-left: clamp(10px, 1vw, 14px);
+  position: relative;
+}
+.compare-col ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: clamp(5px, 0.5vw, 7px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+.compare-col.negative ul li::before { background: var(--accent-orange); }
+.compare-col.positive ul li::before { background: var(--accent-cyan); }
+
+/* --- Code slides --- */
+.code-block {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 1.15vw, 0.92rem);
+  line-height: 1.7;
+  overflow: hidden;
+  color: var(--text-secondary);
+}
+.code-block .cmd { color: var(--accent-cyan); }
+.code-block .flag { color: var(--accent-orange); }
+.code-block .comment { color: var(--text-muted); }
+.code-block .string { color: var(--accent-teal); }
+
+/* --- Card grids --- */
+.card-grid {
+  display: grid;
+  gap: clamp(0.5rem, 1vw, 0.8rem);
+}
+.card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+}
+.info-card-title {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--accent-cyan);
+  margin-bottom: clamp(3px, 0.4vw, 6px);
+  letter-spacing: 0.05em;
+}
+.info-card p, .info-card li {
+  font-size: clamp(0.78rem, 1.2vw, 0.98rem);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.info-card ul { list-style: none; }
+.info-card ul li { padding-left: 10px; position: relative; }
+.info-card ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+}
+
+/* --- Flow/Steps slides --- */
+.flow-steps {
+  display: flex;
+  gap: clamp(0.4rem, 0.8vw, 0.6rem);
+  align-items: stretch;
+}
+.flow-step {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: clamp(0.6rem, 1vw, 0.9rem);
+  text-align: center;
+  position: relative;
+}
+.flow-step::after {
+  content: "→";
+  position: absolute;
+  right: calc(-1 * clamp(0.35rem, 0.6vw, 0.5rem));
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1vw, 0.9rem);
+}
+.flow-step:last-child::after { display: none; }
+.flow-step-num {
+  font-family: var(--font-mono);
+  font-size: var(--label-size);
+  color: var(--accent-cyan);
+  margin-bottom: clamp(2px, 0.3vw, 4px);
+}
+.flow-step-title {
+  font-family: var(--font-display);
+  font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  margin-bottom: clamp(3px, 0.4vw, 6px);
+}
+.flow-step p {
+  font-size: clamp(0.72rem, 1.1vw, 0.88rem);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --- Bottom note / conclusion text --- */
+.slide-note {
+  margin-top: auto;
+  padding-top: var(--element-gap);
+  border-top: 1px solid var(--border-subtle);
+  font-size: clamp(0.75rem, 1.15vw, 0.92rem);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.slide-note strong { color: var(--accent-orange); font-weight: 500; }
+
+/* --- Closing slide --- */
+.closing-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.closing-slide::after {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0, 229, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 20% 80%, rgba(255, 107, 53, 0.06) 0%, transparent 40%);
+}
+
+/* ===========================================
+     ANIMATIONS
+     =========================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(25px);
+  transition:
+    opacity var(--duration-normal) var(--ease-out-expo),
+    transform var(--duration-normal) var(--ease-out-expo);
+}
+.slide.visible .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+.slide.visible .reveal-scale {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+.slide.visible .reveal-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger delays */
+.reveal.d1, .reveal-scale.d1, .reveal-left.d1 { transition-delay: 0.08s; }
+.reveal.d2, .reveal-scale.d2, .reveal-left.d2 { transition-delay: 0.16s; }
+.reveal.d3, .reveal-scale.d3, .reveal-left.d3 { transition-delay: 0.24s; }
+.reveal.d4, .reveal-scale.d4, .reveal-left.d4 { transition-delay: 0.32s; }
+.reveal.d5, .reveal-scale.d5, .reveal-left.d5 { transition-delay: 0.40s; }
+.reveal.d6, .reveal-scale.d6, .reveal-left.d6 { transition-delay: 0.48s; }
+.reveal.d7, .reveal-scale.d7, .reveal-left.d7 { transition-delay: 0.56s; }
+.reveal.d8, .reveal-scale.d8, .reveal-left.d8 { transition-delay: 0.64s; }
+
+/* ===========================================
+     PROGRESS BAR
+     =========================================== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+  z-index: 1000;
+  transition: width 0.3s var(--ease-out-expo);
+  box-shadow: 0 0 10px var(--glow-cyan);
+}
+
+/* ===========================================
+     NAV DOTS
+     =========================================== */
+.nav-dots {
+  position: fixed;
+  right: clamp(8px, 1.5vw, 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 1000;
+}
+.nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.nav-dot:hover { background: var(--text-secondary); }
+.nav-dot.active {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--glow-cyan);
+  transform: scale(1.3);
+}
+.nav-dot.section { background: var(--text-secondary); }
+.nav-dot.section.active { background: var(--accent-orange); box-shadow: 0 0 8px var(--glow-orange); }
+
+/* ===========================================
+     RESPONSIVE BREAKPOINTS
+     =========================================== */
+@media (max-height: 700px) {
+  :root {
+    --slide-padding: clamp(0.75rem, 3vw, 2rem);
+    --content-gap: clamp(0.4rem, 1.5vw, 1rem);
+    --title-size: clamp(1.25rem, 4.5vw, 2.5rem);
+    --h2-size: clamp(1rem, 3vw, 1.75rem);
+  }
+}
+@media (max-height: 600px) {
+  :root {
+    --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+    --content-gap: clamp(0.3rem, 1vw, 0.75rem);
+    --title-size: clamp(1.1rem, 4vw, 2rem);
+    --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+  }
+  .nav-dots, .progress-bar { display: none; }
+}
+@media (max-height: 500px) {
+  :root {
+    --slide-padding: clamp(0.4rem, 2vw, 1rem);
+    --title-size: clamp(1rem, 3.5vw, 1.5rem);
+    --h2-size: clamp(0.9rem, 2.5vw, 1.25rem);
+    --body-size: clamp(0.65rem, 1vw, 0.85rem);
+  }
+}
+@media (max-width: 600px) {
+  :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); }
+  .grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .flow-steps { flex-direction: column; }
+  .flow-step::after {
+    content: "↓";
+    right: 50%;
+    top: auto;
+    bottom: calc(-1 * clamp(0.5rem, 1vh, 0.6rem));
+    transform: translateX(50%);
+  }
+  .card-grid.cols-2, .card-grid.cols-3, .card-grid.cols-4 { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.2s !important;
+  }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation Dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ==========================================
+     SLIDE 1: Title
+     ========================================== -->
+<section class="slide title-slide">
+  <div class="slide-content">
+    <div class="title-label reveal">INTERNAL TRAINING</div>
+    <h1 class="title-main reveal d1">SDD 开发模式</h1>
+    <p class="title-sub reveal d2">先把复杂开发为什么失控讲清楚<br/>再谈方法、工具和落地实践</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 2: 一次典型任务漂移
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 问题</div>
+    <h2 class="slide-heading reveal d1">一次典型任务漂移</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">原始需求</div>
+        <ul>
+          <li>给订单列表加导出按钮</li>
+          <li>功能简单，范围明确</li>
+        </ul>
+      </div>
+      <div class="compare-col negative">
+        <div class="compare-label">实际漂移</div>
+        <ul>
+          <li>AI 先重构列表页结构</li>
+          <li>顺便统一目录规范</li>
+          <li>新建临时结果目录</li>
+          <li>测试未跑，验收未定义</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">原任务从"加导出"漂成"顺手改一片" —— 问题不是 AI 不会做，而是没有收口。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 3: 聊天记录 vs 书面约束
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 对比</div>
+    <h2 class="slide-heading reveal d1">聊天记录 vs 书面约束</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">只靠聊天记录</div>
+        <ul>
+          <li>目标讲过但没留底</li>
+          <li>边界靠上下文记忆</li>
+          <li>做到哪里凭感觉</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">先有书面约束</div>
+        <ul>
+          <li>目标有明确描述</li>
+          <li>边界写进任务入口</li>
+          <li>验收标准先定义好</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 4: 小任务 vs 复杂任务
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 分析</div>
+    <h2 class="slide-heading reveal d1">小任务顺手 vs 复杂任务失控</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col positive">
+        <div class="compare-label">小任务顺手</div>
+        <ul>
+          <li>目标短、变量少</li>
+          <li>上下文还在窗口里</li>
+          <li>做完就结束，不需要接力</li>
+          <li>出错范围通常比较小</li>
+        </ul>
+      </div>
+      <div class="compare-col negative">
+        <div class="compare-label">复杂任务失控</div>
+        <ul>
+          <li>目标会持续变化</li>
+          <li>边界和状态容易丢</li>
+          <li>要跨文件、跨阶段接力</li>
+          <li>没有统一验收就会越做越偏</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 5: 复杂开发失控的四个原因
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 根因</div>
+    <h2 class="slide-heading reveal d1">复杂开发失控的四个原因</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">01 目标漂移</div>
+        <p>需求边做边变，没人收口</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">02 边界不清</div>
+        <p>可改范围只在聊天里提过</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">03 状态丢失</div>
+        <p>上一轮决定没有沉淀下来</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">04 验收模糊</div>
+        <p>没有一致的完成标准</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">这些不是单次回答的问题，而是<strong>过程设计</strong>的问题。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 6: 10讲路线图
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 路线</div>
+    <h2 class="slide-heading reveal d1">10 讲路线图</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-title">为什么会漂</div>
+        <p>复杂开发的失控根因</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-title">SDD 补什么</div>
+        <p>共同事实来源</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-title">OpenSpec</div>
+        <p>如何落地</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-title">多智能体</div>
+        <p>协作与闭环</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">先看清问题，再谈方法和工具。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 7: SDD先补的三件事
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 方向</div>
+    <h2 class="slide-heading reveal d1">SDD 先补的三件事</h2>
+    <div class="card-grid cols-3 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">目标</div>
+        <p>这次到底解决什么问题<br/>功能边界先写清</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">边界</div>
+        <p>哪些能动，哪些别碰<br/>目录、接口、依赖约束</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">验收</div>
+        <p>做到什么程度才算完<br/>测试、输出、回归结果</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">复杂任务的关键，不是更会说，而是更会<strong>收口</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 8: 适合SDD的任务类型
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP01 · 适用</div>
+    <h2 class="slide-heading reveal d1">适合 SDD 的任务类型</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">存量项目</div>
+        <p>老代码边界多，最怕顺手乱改；需要"改一处牵一片"的控制</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">多人协作</div>
+        <p>人和 AI 都需要统一入口；不能靠聊天接力</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">长链路任务</div>
+        <p>需求、设计、实现要能收口；阶段产物必须可追踪</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">要 review 的任务</div>
+        <p>先看意图，再看实现；不只盯裸 diff</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 9: EP02 Section Divider
+     ========================================== -->
+<section class="slide section-slide" data-section="true">
+  <div class="slide-content">
+    <div class="section-ep reveal">EPISODE 02</div>
+    <h2 class="section-title reveal d1">SDD 不是多写文档</h2>
+    <p class="section-sub reveal d2">它到底在补什么？补的是一份共同事实来源</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 10: 先定义再实现
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 理念</div>
+    <h2 class="slide-heading reveal d1">先定义再实现</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">被划掉</div>
+        <ul><li>边聊边写</li></ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">主张</div>
+        <ul><li>先定义再实现</li></ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">不是拖慢开发，而是把<strong>返工前置消化</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 11: SDD在更上层收口
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 定位</div>
+    <h2 class="slide-heading reveal d1">SDD 在更上层收口</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">TDD</div>
+        <p>先写测试，定义代码行为</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">BDD</div>
+        <p>先写行为，强调用户视角</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">技术规格</div>
+        <p>架构约束与实现前提</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">需求规格</div>
+        <p>功能目标与边界条件</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">SDD 把不同阶段的约束收进一份<strong>可执行事实来源</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 12: 没有spec vs 有稳定spec
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 价值</div>
+    <h2 class="slide-heading reveal d1">没有 spec vs 有稳定 spec</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">没有 SPEC</div>
+        <ul>
+          <li>目标靠聊天补充</li>
+          <li>边界一忙就忘</li>
+          <li>做完靠直觉判断</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">有稳定 SPEC</div>
+        <ul>
+          <li>目标可回看</li>
+          <li>边界可对照</li>
+          <li>验收可执行</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">spec 提供<strong>持续对齐能力</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 13: 常见误解 vs 真正要补的
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 澄清</div>
+    <h2 class="slide-heading reveal d1">常见误解 vs 真正要补的</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">常见误解</div>
+        <ul>
+          <li>先写一堆文档</li>
+          <li>写完放着不更新</li>
+          <li>项目一忙就回到裸聊</li>
+          <li>最后只剩形式感</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">真正要补的</div>
+        <ul>
+          <li>给实现建立事实来源</li>
+          <li>让 review 有共同参照</li>
+          <li>让验证能对齐需求</li>
+          <li>让变更可以追溯和交接</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">价值不在"写了什么"，而在"后面是否真的<strong>按它推进</strong>"。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 14: spec最少回答什么
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 最小集</div>
+    <h2 class="slide-heading reveal d1">一份 spec 最少回答什么</h2>
+    <div class="card-grid cols-3 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">目标</div>
+        <p>做什么、为什么做<br/>业务问题与范围</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">边界</div>
+        <p>能做、不能做什么<br/>文件、接口、依赖限制</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">验收</div>
+        <p>如何判断完成<br/>输出、测试、回归结果</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">不是增加流程，而是<strong>减少返工</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 15: 更完整的spec内容
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 完整版</div>
+    <h2 class="slide-heading reveal d1">更完整的 spec 内容</h2>
+    <div class="card-grid cols-3 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">目标与价值</div>
+        <p>解决什么问题，为什么现在做</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">上下文与约束</div>
+        <p>依赖什么，受什么限制</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">输入输出</div>
+        <p>谁给什么，最后产出什么</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">边界条件</div>
+        <p>异常、反例和禁止项</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">验收标准</div>
+        <p>做到什么程度才算完</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">技术要求</div>
+        <p>性能、安全、可维护性</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 16: 功能级spec最小轮廓
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 示例</div>
+    <h2 class="slide-heading reveal d1">一个功能级 spec 最小轮廓</h2>
+    <div class="code-block reveal-scale d2">
+      <div><span class="comment"># 目标</span> 给订单列表增加导出能力</div>
+      <div><span class="comment"># 边界</span> 只改列表与导出链路，不重构查询模块</div>
+      <div><span class="comment"># 输入输出</span> 选择条件 → 导出文件</div>
+      <div><span class="comment"># 异常</span> 无权限 / 导出超时 / 空数据</div>
+      <div><span class="comment"># 验收</span> 接口可回归，结果可下载，日志可追踪</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 17: 什么时候不必重工程化
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP02 · 判断</div>
+    <h2 class="slide-heading reveal d1">什么时候不必重工程化</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">可以先别上太重</div>
+        <ul>
+          <li>探索型原型</li>
+          <li>一两行的小改动</li>
+          <li>紧急修复先止血</li>
+          <li>强主观的临时试验</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">值得走 SDD</div>
+        <ul>
+          <li>复杂功能迭代</li>
+          <li>多人或多 agent 协作</li>
+          <li>需要 review 和追溯</li>
+          <li>做偏了返工很贵的任务</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">不是所有地方都要工程化，但复杂任务不能一直<strong>靠感觉推进</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 18: EP03 Section Divider
+     ========================================== -->
+<section class="slide section-slide" data-section="true">
+  <div class="slide-content">
+    <div class="section-ep reveal">EPISODE 03</div>
+    <h2 class="section-title reveal d1">OpenSpec 落地</h2>
+    <p class="section-sub reveal d2">为什么更容易被真正用起来</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 19: OpenSpec主路径
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · 主路径</div>
+    <h2 class="slide-heading reveal d1">OpenSpec 主路径</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-title">Explore</div>
+        <p>先澄清需求与边界</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-title">Propose</div>
+        <p>生成 proposal、design、tasks</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-title">Apply</div>
+        <p>按清单实现并及时验证</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-title">Archive</div>
+        <p>增量并回主规范库</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">流程越轻，越可能变成<strong>习惯</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 20: review顺序变化
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · Review</div>
+    <h2 class="slide-heading reveal d1">review 顺序也会变化</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">Step 1</div>
+        <div class="flow-step-title">看目标和边界</div>
+        <p>有没有写清</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Step 2</div>
+        <div class="flow-step-title">看验收标准</div>
+        <p>是否可执行</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Step 3</div>
+        <div class="flow-step-title">看代码实现</div>
+        <p>是否对齐 spec</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">review 不再只是盯 diff，而是<strong>对齐共同事实来源</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 21: 重流程 vs OpenSpec体验
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · 对比</div>
+    <h2 class="slide-heading reveal d1">重流程体验 vs OpenSpec 体验</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">重流程体验</div>
+        <ul>
+          <li>阶段很多</li>
+          <li>命令记不住</li>
+          <li>先学工具再做需求</li>
+          <li>团队很容易半路放弃</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">OpenSpec 体验</div>
+        <ul>
+          <li>主路径很短</li>
+          <li>四个动作容易形成习惯</li>
+          <li>先解决需求，再补流程细节</li>
+          <li>更适合日常迭代</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 22: 结构化工作链 vs 聊天记录
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · 结构</div>
+    <h2 class="slide-heading reveal d1">结构化工作链 vs 只有聊天记录</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">只有聊天记录</div>
+        <ul>
+          <li>讨论完就散</li>
+          <li>后续靠记忆恢复</li>
+          <li>review 只能看 diff</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">有结构化工作链</div>
+        <ul>
+          <li>意图、方案、任务分层沉淀</li>
+          <li>后续可按文档恢复上下文</li>
+          <li>review 可以分阶段看问题</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">结构化工作越主路径，协作越不像是<strong>碰运气</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 23: 最小OpenSpec工作流
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · 实操</div>
+    <h2 class="slide-heading reveal d1">一条最小 OpenSpec 工作流</h2>
+    <div class="code-block reveal-scale d2">
+      <div><span class="cmd">npm install</span> <span class="flag">-g</span> <span class="string">@fission-ai/openspec@latest</span></div>
+      <div><span class="cmd">openspec</span> init</div>
+      <div><span class="comment"># Explore：澄清需求</span></div>
+      <div><span class="cmd">/opsx:explore</span> <span class="string">给订单列表加导出功能</span></div>
+      <div><span class="comment"># Propose：生成方案</span></div>
+      <div><span class="cmd">/opsx:propose</span> <span class="string">增加订单导出能力</span></div>
+      <div><span class="comment"># Apply：按清单实现</span></div>
+      <div><span class="cmd">/opsx:apply</span></div>
+      <div><span class="comment"># Archive：并回规范库</span></div>
+      <div><span class="cmd">/opsx:archive</span> <span class="string">add-order-export</span> <span class="flag">--yes</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 24: 探索阶段 vs 生产迭代
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP03 · 阶段</div>
+    <h2 class="slide-heading reveal d1">探索阶段 vs 生产迭代</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col positive">
+        <div class="compare-label">探索阶段</div>
+        <ul>
+          <li>先跑出方向</li>
+          <li>问题还在收敛</li>
+          <li>可以先轻量一点</li>
+          <li>后面再决定是否补规范</li>
+        </ul>
+      </div>
+      <div class="compare-col negative">
+        <div class="compare-label">生产迭代</div>
+        <ul>
+          <li>要考虑 review 与回溯</li>
+          <li>改动要能交接</li>
+          <li>存量系统不能随便漂</li>
+          <li>更适合走完整规范闭环</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">OpenSpec 更像<strong>生产级迭代主路径</strong>，不是替代所有探索行为。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 25: EP04 Section Divider
+     ========================================== -->
+<section class="slide section-slide" data-section="true">
+  <div class="slide-content">
+    <div class="section-ep reveal">EPISODE 04</div>
+    <h2 class="section-title reveal d1">多智能体协作</h2>
+    <p class="section-sub reveal d2">真正难的不是执行，而是交接</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 26: 并行方式对比
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 对比</div>
+    <h2 class="slide-heading reveal d1">并行方式对比</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">直接并行开干</div>
+        <ul>
+          <li>每个 agent 自己理解需求</li>
+          <li>接口和字段容易漂移</li>
+          <li>合并时才暴露冲突</li>
+          <li>返工成本很高</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">先文档再并行</div>
+        <ul>
+          <li>目标和边界先写清楚</li>
+          <li>任务按交付单元拆开</li>
+          <li>接口和验收先对齐</li>
+          <li>并行时更容易稳定收口</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">协作不是把任务扔出去，而是先把<strong>共同事实立住</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 27: 典型并行翻车链路
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 翻车</div>
+    <h2 class="slide-heading reveal d1">一次典型并行翻车链路</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">Agent A</div>
+        <div class="flow-step-title">修改 response 字段</div>
+        <p>改变了返回结构</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Agent B</div>
+        <div class="flow-step-title">按旧字段补测试</div>
+        <p>使用了旧契约</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Agent C</div>
+        <div class="flow-step-title">合并并跑集成</div>
+        <p>全部失效</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">问题不是代码量，而是<strong>共享契约从未写清</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 28: 多智能体共同事实
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 共识</div>
+    <h2 class="slide-heading reveal d1">多智能体协作的共同事实</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">Goal</div>
+        <p>这次到底要交付什么</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Design</div>
+        <p>关键方案与边界怎么定</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Contracts</div>
+        <p>接口、字段、输入输出</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Acceptance</div>
+        <p>做到什么算完成</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">多智能体要跑顺，先把共享事实从<strong>聊天变成文档</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 29: OpenSpec默认留下什么
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 产物</div>
+    <h2 class="slide-heading reveal d1">OpenSpec 默认留下什么</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">proposal.md</div>
+        <p>解释为什么做这次改动；影响范围与风险</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">design.md</div>
+        <p>记录实现路径和关键决策；技术方案与取舍</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">tasks.md</div>
+        <p>拆成可执行清单；按任务推进并勾选</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">specs/</div>
+        <p>并回系统的长期规范；避免文档腐烂</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">这组工作不是摆设，会直接影响 <strong>review、回顾、接手和后续迭代</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 30: 讨论变成资产
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 沉淀</div>
+    <h2 class="slide-heading reveal d1">讨论变成资产</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">被划掉</div>
+        <ul><li>聊完就忘</li></ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">主张</div>
+        <ul><li>讨论变成资产</li></ul>
+      </div>
+    </div>
+    <ul class="content-list reveal d3" style="margin-top: var(--content-gap);">
+      <li><strong>proposal</strong> 讲为什么做</li>
+      <li><strong>design</strong> 讲怎么做</li>
+      <li><strong>tasks</strong> 讲一步步怎么推进</li>
+      <li><strong>specs</strong> 沉淀成长期规范</li>
+    </ul>
+    <div class="slide-note reveal d4">工作的价值在于后续还会被<strong>持续使用</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 31: 按交付单元拆
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 拆解</div>
+    <h2 class="slide-heading reveal d1">按人分活 vs 按交付单元拆</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">按人分活</div>
+        <ul>
+          <li>谁想做什么就先做</li>
+          <li>边界常常后置</li>
+          <li>合并时才发现不匹配</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">按交付单元拆</div>
+        <ul>
+          <li>先定输入输出</li>
+          <li>接口契约先锁定</li>
+          <li>每块都有完成标准</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">任务能否并行，取决于<strong>边界是否独立、验收是否清楚</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 32: 交付单元的三个文件
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 文件</div>
+    <h2 class="slide-heading reveal d1">交付单元的三个文件</h2>
+    <div class="card-grid cols-3 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">proposal.md</div>
+        <p>说明目标、边界和风险<br/>先让任务收口</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">tasks.md</div>
+        <p>把任务拆成可勾选单元<br/>便于派发与追踪</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">handoff.md</div>
+        <p>记录当前状态和下一步<br/>换人换 agent 都能继续</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 33: 60秒起手动作
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 起手</div>
+    <h2 class="slide-heading reveal d1">60 秒起手动作</h2>
+    <div class="code-block reveal-scale d2">
+      <div><span class="cmd">read</span> <span class="string">proposal.md</span></div>
+      <div><span class="cmd">read</span> <span class="string">contracts.md</span> <span class="flag">&&</span> <span class="cmd">read</span> <span class="string">tasks.md</span></div>
+      <div><span class="cmd">assign</span> Agent A → API, Agent B → UI, Agent C → tests</div>
+      <div><span class="comment"># 每个 agent 先明确：输入、输出、互域、验收门</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 34: 最小handoff说明
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 交接</div>
+    <h2 class="slide-heading reveal d1">最小 handoff 说明</h2>
+    <div class="card-grid cols-3 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">Done</div>
+        <p>导出接口已补齐，字段契约已锁定</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Next</div>
+        <p>继续补下载测试和权限回归</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Risk</div>
+        <p>前端仍在使用旧字段，需要同步更新</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">handoff 不求漂亮，先求<strong>下一棒能立即接上</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 35: 并行条件
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP04 · 条件</div>
+    <h2 class="slide-heading reveal d1">并行条件</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">先别并行</div>
+        <ul>
+          <li>接口还在变</li>
+          <li>字段命名没锁定</li>
+          <li>验收门不明确</li>
+          <li>写域互相覆盖</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">可以并行</div>
+        <ul>
+          <li>输入输出已固定</li>
+          <li>契约已经成文</li>
+          <li>任务边界互不干扰</li>
+          <li>完成标准都能独立检查</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">并行不是默认动作，很多任务其实应该<strong>先串行收口</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 36: EP05 Section Divider
+     ========================================== -->
+<section class="slide section-slide" data-section="true">
+  <div class="slide-content">
+    <div class="section-ep reveal">EPISODE 05</div>
+    <h2 class="section-title reveal d1">最小闭环实操</h2>
+    <p class="section-sub reveal d2">用四个动作跑通一次真实交付链</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 37: 更稳的三步拆法
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 拆法</div>
+    <h2 class="slide-heading reveal d1">更稳的三步拆法</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-title">定输入输出</div>
+        <p>接什么、产什么<br/>接口、文件、状态</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-title">写契约</div>
+        <p>字段和边界写清楚<br/>别等到合并才对齐</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-title">设验收门</div>
+        <p>每块都知道怎样算完<br/>测试、lint、回归</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 38: 起手 init/explore/propose
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 起手</div>
+    <h2 class="slide-heading reveal d1">起手：init / explore / propose</h2>
+    <ul class="content-list reveal d2">
+      <li>安装并初始化 OpenSpec</li>
+      <li>从很小但真实的需求开始：订单列表增加导出功能</li>
+      <li>执行 <strong>explore</strong> 与 <strong>propose</strong></li>
+      <li>生成 <strong>changes/add-order-export/...</strong> 全套工作</li>
+    </ul>
+    <div class="slide-note reveal d3">propose 的作用是先把本次变更收成<strong>可评审工作</strong>，而不是立刻开写。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 39: propose阶段产物
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 产物</div>
+    <h2 class="slide-heading reveal d1">propose 阶段产物</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">proposal.md</div>
+        <p>为什么做、影响哪些范围<br/>先看意图对不对</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">design.md</div>
+        <p>怎么实现、用什么方案<br/>关键取舍先前置</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">tasks.md</div>
+        <p>按什么顺序推进<br/>任务拆到可执行</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">specs/</div>
+        <p>新增或修改了什么规范<br/>为 archive 做准备</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">后续实现、review 和交接都会围着这些工作转。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 40: 最小闭环四动作
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 闭环</div>
+    <h2 class="slide-heading reveal d1">最小闭环四动作</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-title">Explore</div>
+        <p>先把需求和边界聊清楚</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-title">Propose</div>
+        <p>生成 proposal、design、tasks、specs</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-title">Apply</div>
+        <p>按任务执行，不靠感觉一路冲</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-title">Archive</div>
+        <p>把增量并回主规范库</p>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">闭环不是动作本身，而是每一步都<strong>可看、可对齐、可继续推进</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 41: apply阶段任务推进
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 执行</div>
+    <h2 class="slide-heading reveal d1">apply 阶段任务推进</h2>
+    <div class="flow-steps reveal-scale d2">
+      <div class="flow-step">
+        <div class="flow-step-num">Task 1</div>
+        <div class="flow-step-title">新增导出接口</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Task 2</div>
+        <div class="flow-step-title">补服务层导出逻辑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">Task 3</div>
+        <div class="flow-step-title">回归权限与下载测试</div>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">apply 不是一路往前冲，而是带着任务清单和验收止损<strong>推进</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 42: 边做边验 + 验证门
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 验证</div>
+    <h2 class="slide-heading reveal d1">贯穿闭环的验证门</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">最后才统一检查</div>
+        <ul>
+          <li>问题晚暴露</li>
+          <li>返工一改就是一串</li>
+          <li>很难知道哪一步开始偏</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">每一步都带验证门</div>
+        <ul>
+          <li>问题尽早暴露</li>
+          <li>每块都知道怎么验</li>
+          <li>偏了可以在当步修正</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">验证不是尾声，而是<strong>贯穿整条闭环</strong>的动作。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 43: 最少要盯住哪些验证门
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 检查</div>
+    <h2 class="slide-heading reveal d1">最少要盯住哪些验证门</h2>
+    <div class="card-grid cols-2 reveal-scale d2">
+      <div class="info-card">
+        <div class="info-card-title">边界门</div>
+        <p>有没有超出本次范围<br/>避免顺手改太多</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">契约门</div>
+        <p>接口和字段是否一致<br/>前后端都按同一份 spec</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">测试门</div>
+        <p>关键回归是否补齐<br/>别把验证留到最后</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">检查项</div>
+        <p>是否偏离边界、接口是否对齐<br/>测试是否补上、回归是否通过</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 44: Archive的作用
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 归档</div>
+    <h2 class="slide-heading reveal d1">Archive 的作用</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">不做 Archive</div>
+        <ul>
+          <li>changes 只停在临时目录</li>
+          <li>代码改了，主规范没更新</li>
+          <li>后续继续迭代时又要猜</li>
+        </ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">做 Archive</div>
+        <ul>
+          <li>增量规范并回主 specs</li>
+          <li>系统现状可回看</li>
+          <li>后续迭代有统一入口</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-note reveal d3">archive 不是收尾动作而已，它决定<strong>文档会不会腐烂</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 45: 收束与下一步
+     ========================================== -->
+<section class="slide">
+  <div class="slide-content">
+    <div class="slide-tag reveal">EP05 · 收束</div>
+    <h2 class="slide-heading reveal d1">先成文，再实现，再归档</h2>
+    <div class="compare-grid reveal-scale d2">
+      <div class="compare-col negative">
+        <div class="compare-label">被划掉</div>
+        <ul><li>光需求，等代码</li></ul>
+      </div>
+      <div class="compare-col positive">
+        <div class="compare-label">主张</div>
+        <ul><li>先成文，再实现，再归档</li></ul>
+      </div>
+    </div>
+    <ul class="content-list reveal d3" style="margin-top: var(--content-gap);">
+      <li>先看清复杂开发为什么会漂</li>
+      <li>再用 spec 把事实来源立住</li>
+      <li>用 OpenSpec 跑短而稳的主路径</li>
+      <li>把协作和归档一起接上</li>
+    </ul>
+    <div class="slide-note reveal d4">真正的提升，不只是写得快，而是后面<strong>更稳、更能接力</strong>。</div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SLIDE 46: 行动建议 (Closing)
+     ========================================== -->
+<section class="slide closing-slide">
+  <div class="slide-content">
+    <div class="section-ep reveal">TAKE ACTION</div>
+    <h2 class="section-title reveal d1">今天就挑一个小需求<br/>跑一轮最小闭环</h2>
+    <p class="section-sub reveal d2" style="margin-bottom: var(--content-gap);">
+      不是学更多命令，而是挑一个真实需求自己跑一轮<br/>
+      AI 开发进入工程状态，不是多换几个模型<br/>
+      而是把需求、规范、实现、验证和交接接成一条链
+    </p>
+    <div class="flow-steps reveal-scale d3" style="max-width: min(90vw, 700px); margin: 0 auto;">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-title">Explore</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-title">Propose</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-title">Apply</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-title">Archive</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===========================================
+     SLIDE PRESENTATION CONTROLLER
+     =========================================== -->
+<script>
+class SlidePresentation {
+  constructor() {
+    this.slides = document.querySelectorAll('.slide');
+    this.currentSlide = 0;
+    this.isScrolling = false;
+    this.touchStartY = 0;
+    this.navDotsContainer = document.getElementById('navDots');
+    this.progressBar = document.getElementById('progressBar');
+
+    this.setupIntersectionObserver();
+    this.setupKeyboardNav();
+    this.setupTouchNav();
+    this.setupWheelNav();
+    this.setupNavDots();
+    this.updateProgress();
+  }
+
+  /* Intersection Observer: trigger animations when slides enter viewport */
+  setupIntersectionObserver() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const idx = Array.from(this.slides).indexOf(entry.target);
+          if (idx !== -1) {
+            this.currentSlide = idx;
+            this.updateNavDots();
+            this.updateProgress();
+          }
+        }
+      });
+    }, { threshold: 0.4 });
+
+    this.slides.forEach(slide => observer.observe(slide));
+  }
+
+  /* Keyboard navigation */
+  setupKeyboardNav() {
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowDown':
+        case 'ArrowRight':
+        case ' ':
+        case 'PageDown':
+          e.preventDefault();
+          this.goToSlide(this.currentSlide + 1);
+          break;
+        case 'ArrowUp':
+        case 'ArrowLeft':
+        case 'PageUp':
+          e.preventDefault();
+          this.goToSlide(this.currentSlide - 1);
+          break;
+        case 'Home':
+          e.preventDefault();
+          this.goToSlide(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          this.goToSlide(this.slides.length - 1);
+          break;
+      }
+    });
+  }
+
+  /* Touch/swipe navigation */
+  setupTouchNav() {
+    document.addEventListener('touchstart', (e) => {
+      this.touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const diff = this.touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(diff) > 50) {
+        this.goToSlide(this.currentSlide + (diff > 0 ? 1 : -1));
+      }
+    }, { passive: true });
+  }
+
+  /* Mouse wheel navigation with debounce */
+  setupWheelNav() {
+    let wheelTimeout = null;
+    document.addEventListener('wheel', (e) => {
+      if (wheelTimeout) return;
+      wheelTimeout = setTimeout(() => { wheelTimeout = null; }, 800);
+
+      if (Math.abs(e.deltaY) > 30) {
+        this.goToSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+      }
+    }, { passive: true });
+  }
+
+  /* Navigate to specific slide */
+  goToSlide(index) {
+    if (index < 0 || index >= this.slides.length) return;
+    this.currentSlide = index;
+    this.slides[index].scrollIntoView({ behavior: 'smooth' });
+    this.updateNavDots();
+    this.updateProgress();
+  }
+
+  /* Progress bar update */
+  updateProgress() {
+    if (!this.progressBar) return;
+    const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+    this.progressBar.style.width = progress + '%';
+  }
+
+  /* Navigation dots */
+  setupNavDots() {
+    if (!this.navDotsContainer) return;
+    this.navDotsContainer.innerHTML = '';
+
+    this.slides.forEach((slide, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      if (slide.dataset.section) dot.classList.add('section');
+      if (i === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
+      dot.addEventListener('click', () => this.goToSlide(i));
+      this.navDotsContainer.appendChild(dot);
+    });
+  }
+
+  updateNavDots() {
+    if (!this.navDotsContainer) return;
+    const dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === this.currentSlide);
+    });
+  }
+}
+
+/* Initialize */
+document.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+});
+</script>
+</body>
+</html>
