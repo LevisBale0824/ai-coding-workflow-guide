@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDD 开发模式 PPT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===========================================
+       CSS CUSTOM PROPERTIES: SDD DARK THEME
+       =========================================== */
+    :root {
+      --bg-primary: #080d19;
+      --bg-secondary: #111827;
+      --bg-panel: rgba(18, 25, 41, 0.82);
+      --bg-panel-soft: rgba(255, 255, 255, 0.045);
+      --text-primary: #f8fafc;
+      --text-secondary: #aab2c5;
+      --text-muted: #6f7a91;
+      --accent: #f4a62a;
+      --accent-2: #39d7b6;
+      --accent-blue: #66a3ff;
+      --danger: #ff6978;
+      --ok: #7de38d;
+      --line: rgba(255,255,255,0.12);
+      --shadow: rgba(0, 0, 0, 0.36);
+      --font-display: "Noto Serif SC", serif;
+      --font-body: "IBM Plex Sans SC", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+      --title-size: clamp(2rem, 5.8vw, 5.2rem);
+      --h2-size: clamp(1.35rem, 3vw, 3.1rem);
+      --h3-size: clamp(0.95rem, 1.8vw, 1.55rem);
+      --body-size: clamp(0.72rem, 1.28vw, 1.08rem);
+      --small-size: clamp(0.58rem, 0.86vw, 0.82rem);
+      --slide-padding: clamp(1rem, 4vw, 4rem);
+      --content-gap: clamp(0.6rem, 1.8vw, 1.8rem);
+      --element-gap: clamp(0.35rem, 1vw, 1rem);
+      --radius: clamp(0.55rem, 1.2vw, 1.2rem);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-normal: 0.65s;
+    }
+
+    /* ===========================================
+       BASE RESET
+       =========================================== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background: var(--bg-primary); color: var(--text-primary); }
+
+    /* ===========================================
+       VIEWPORT FITTING: MANDATORY BASE STYLES
+       Include this ENTIRE file in every presentation.
+       These styles ensure slides fit exactly in the viewport.
+       =========================================== */
+    html, body { height: 100%; overflow-x: hidden; }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    .slide { width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; }
+    .slide-content { flex: 1; display: flex; flex-direction: column; justify-content: center; max-height: 100%; overflow: hidden; padding: var(--slide-padding); }
+    .card, .container, .content-box { max-width: min(90vw, 1000px); max-height: min(80vh, 700px); }
+    .feature-list, .bullet-list { gap: clamp(0.4rem, 1vh, 1rem); }
+    .feature-list li, .bullet-list li { font-size: var(--body-size); line-height: 1.4; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: clamp(0.5rem, 1.5vw, 1rem); }
+    img, .image-container { max-width: 100%; max-height: min(50vh, 400px); object-fit: contain; }
+    @media (max-height: 700px) { :root { --slide-padding: clamp(0.75rem, 3vw, 2rem); --content-gap: clamp(0.4rem, 1.5vw, 1rem); --title-size: clamp(1.25rem, 4.5vw, 2.5rem); --h2-size: clamp(1rem, 3vw, 1.75rem); } }
+    @media (max-height: 600px) { :root { --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem); --content-gap: clamp(0.3rem, 1vw, 0.75rem); --title-size: clamp(1.1rem, 4vw, 2rem); --body-size: clamp(0.7rem, 1.2vw, 0.95rem); } .nav-dots, .keyboard-hint, .decorative { display: none; } }
+    @media (max-height: 500px) { :root { --slide-padding: clamp(0.4rem, 2vw, 1rem); --title-size: clamp(1rem, 3.5vw, 1.5rem); --h2-size: clamp(0.9rem, 2.5vw, 1.25rem); --body-size: clamp(0.65rem, 1vw, 0.85rem); } }
+    @media (max-width: 600px) { :root { --title-size: clamp(1.25rem, 7vw, 2.5rem); } .grid { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; } html { scroll-behavior: auto; } }
+
+    /* ===========================================
+       BACKGROUND ATMOSPHERE
+       =========================================== */
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 78%, rgba(244,166,42,0.15), transparent 22%),
+        radial-gradient(circle at 82% 16%, rgba(86,124,255,0.16), transparent 26%),
+        linear-gradient(135deg, #060912 0%, #10182d 52%, #07101f 100%);
+      z-index: 0;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: clamp(2rem, 5vw, 5rem) clamp(2rem, 5vw, 5rem);
+      opacity: 0.26;
+      z-index: 0;
+    }
+    .slide > * { position: relative; z-index: 1; }
+
+    /* ===========================================
+       TYPOGRAPHY AND SHARED COMPONENTS
+       =========================================== */
+    h1, h2, h3 { letter-spacing: -0.04em; }
+    h1 { font-family: var(--font-display); font-size: var(--title-size); font-weight: 900; line-height: 1.05; }
+    h2 { font-family: var(--font-display); font-size: var(--h2-size); font-weight: 900; line-height: 1.1; }
+    h3 { font-size: var(--h3-size); font-weight: 700; }
+    p, li { font-size: var(--body-size); color: var(--text-secondary); line-height: 1.55; }
+    code { font-family: var(--font-mono); color: var(--accent-2); }
+    .accent { color: var(--accent); }
+    .muted { color: var(--text-muted); }
+    .tag {
+      display: inline-flex; align-items: center; gap: clamp(0.25rem,0.5vw,0.5rem);
+      padding: clamp(0.24rem,0.55vw,0.45rem) clamp(0.7rem,1.2vw,1.1rem);
+      border: 1px solid rgba(244,166,42,0.38); border-radius: 999px;
+      background: rgba(244,166,42,0.12); color: #ffd592;
+      font-family: var(--font-mono); font-size: var(--small-size); font-weight: 700;
+    }
+    .subtitle { margin-top: clamp(0.5rem, 1.2vw, 1.1rem); font-size: clamp(0.9rem, 1.7vw, 1.4rem); color: var(--text-secondary); }
+    .caption {
+      position: absolute; left: 50%; bottom: clamp(3.8rem, 7vh, 5rem); transform: translateX(-50%);
+      max-width: min(72vw, 780px); padding: clamp(0.45rem, 0.8vw, 0.7rem) clamp(0.8rem, 1.4vw, 1.25rem);
+      border-radius: clamp(0.35rem,0.7vw,0.65rem); background: rgba(0,0,0,0.72);
+      color: var(--text-primary); font-weight: 600; font-size: clamp(0.68rem, 1.05vw, 0.95rem); text-align: center;
+      box-shadow: 0 clamp(0.4rem,1vw,1rem) clamp(1rem,2vw,2rem) rgba(0,0,0,0.35);
+    }
+    .bottom-nav {
+      position: absolute; left: 0; right: 0; bottom: 0; height: clamp(2.2rem, 5vh, 3.4rem);
+      background: rgba(255,255,255,0.22); backdrop-filter: blur(10px);
+      display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
+      color: rgba(255,255,255,0.8); font-size: var(--small-size);
+    }
+    .bottom-nav span { text-align: center; border-left: 1px solid rgba(255,255,255,0.35); }
+    .bottom-nav span:first-child { border-left: none; }
+    .bottom-nav .active { color: white; font-weight: 700; background: rgba(255,255,255,0.12); height: 100%; display: grid; place-items: center; }
+
+    /* ===========================================
+       SLIDE LAYOUTS
+       =========================================== */
+    .title-layout .slide-content, .statement-layout .slide-content, .agenda-layout .slide-content { align-items: center; text-align: center; }
+    .title-layout h1 { text-shadow: 0 clamp(0.4rem,1vw,1rem) clamp(1rem,2vw,2rem) rgba(0,0,0,0.35); }
+    .statement-layout .crossed { position: relative; color: rgba(255,255,255,0.22); font-size: clamp(1.2rem, 3vw, 2.6rem); font-weight: 800; margin-bottom: clamp(0.2rem,0.8vw,0.8rem); }
+    .statement-layout .crossed::after { content: ""; position: absolute; left: 0; right: 0; top: 52%; height: clamp(0.08rem,0.25vw,0.18rem); background: var(--danger); transform: rotate(-3deg); }
+    .statement-layout h2 { color: var(--text-primary); }
+    .statement-layout h2 .accent { display: inline-block; }
+    .arrow-down { color: var(--accent); font-size: clamp(1rem,2vw,1.8rem); margin-bottom: clamp(0.3rem,0.8vw,0.7rem); }
+    .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: clamp(0.8rem, 2vw, 2rem); align-items: stretch; width: min(86vw, 980px); margin: 0 auto; }
+    .compare-card, .info-card {
+      background: linear-gradient(160deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+      border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(0.85rem, 1.7vw, 1.6rem);
+      box-shadow: 0 clamp(0.6rem,1.4vw,1.3rem) clamp(1.3rem,3vw,3rem) var(--shadow);
+      min-height: clamp(5rem, 10vh, 7.5rem);
+    }
+    .compare-card.left { background: linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02)); }
+    .compare-card.right { background: linear-gradient(160deg, rgba(40,100,160,0.18), rgba(255,255,255,0.035)); }
+    .icon-small { display: inline-block; font-size: clamp(1.3rem, 2.3vw, 2rem); color: var(--accent); margin-right: clamp(0.3rem,0.6vw,0.5rem); vertical-align: middle; }
+    .compare-card h3 { display: flex; align-items: center; white-space: nowrap; }
+    .vs { align-self: center; width: clamp(2.4rem, 4vw, 3.8rem); height: clamp(2.4rem, 4vw, 3.8rem); border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.08); border: 1px solid var(--line); font-weight: 900; }
+    .bottom-note { margin: clamp(1.8rem, 5vh, 3.8rem) auto 0; max-width: min(82vw, 900px); color: var(--accent); font-weight: 700; text-align: center; font-size: clamp(0.75rem, 1.25vw, 1.05rem); }
+    ul { list-style: none; display: grid; gap: clamp(0.35rem, 0.9vh, 0.75rem); margin-top: clamp(0.55rem,1vw,1rem); }
+    li { display: flex; align-items: baseline; }
+    li::before { content: "•"; color: var(--accent); margin-right: clamp(0.35rem,0.7vw,0.65rem); flex-shrink: 0; }
+    li:has(.list-mark)::before { content: none; margin-right: 0; }
+    .list-mark { display: inline-flex; place-items: center; width: clamp(1rem,1.8vw,1.35rem); margin-right: clamp(0.38rem,0.8vw,0.7rem); color: var(--accent); font-size: clamp(0.78rem,1.25vw,1rem); flex-shrink: 0; }
+    .card-grid { width: min(88vw, 980px); margin: clamp(1rem,2vw,2rem) auto 0; display: grid; gap: clamp(0.7rem,1.3vw,1rem); align-items: stretch; }
+    .card-grid .info-card { display: flex; flex-direction: column; justify-content: flex-start; }
+    .cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .cols-6 { grid-template-columns: repeat(6, 1fr); }
+    .num { display: inline-flex; place-items: center; justify-content: center; width: clamp(1.3rem,2vw,1.85rem); height: clamp(1.3rem,2vw,1.85rem); border-radius: clamp(0.3rem,0.6vw,0.55rem); background: rgba(244,166,42,0.12); color: var(--accent); border: 1px solid rgba(244,166,42,0.24); font-family: var(--font-mono); font-size: clamp(0.55rem,0.9vw,0.75rem); margin-right: clamp(0.3rem,0.6vw,0.55rem); flex-shrink: 0; }
+    .info-card h3 { display: flex; align-items: center; margin-bottom: clamp(0.35rem,0.8vw,0.7rem); white-space: nowrap; font-size: clamp(0.85rem,1.4vw,1.2rem); }
+    .mini-label { display: inline-block; margin-top: clamp(0.45rem,0.9vw,0.8rem); color: var(--accent-2); font-family: var(--font-mono); font-size: var(--small-size); }
+    .network { width: min(80vw, 820px); height: min(58vh, 500px); margin: clamp(0.8rem,1.6vw,1.4rem) auto 0; position: relative; }
+    .center-orb { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: clamp(5rem,9vw,8rem); height: clamp(5rem,9vw,8rem); border-radius: 50%; display: grid; place-items: center; text-align: center; background: radial-gradient(circle, #ffbd35, #e98416); color: #211300; font-weight: 900; box-shadow: 0 0 clamp(1.5rem,3vw,3rem) rgba(244,166,42,0.4); font-size: clamp(0.75rem,1.4vw,1.05rem); }
+    .node { position: absolute; width: clamp(11rem, 18vw, 16rem); height: clamp(5.5rem,10vh,7.5rem); }
+    .node:nth-child(2) { left: 8%; top: 2%; } .node:nth-child(3) { right: 8%; top: 2%; } .node:nth-child(4) { right: 8%; bottom: 2%; } .node:nth-child(5) { left: 8%; bottom: 2%; }
+    .callout { width: fit-content; max-width: min(80vw, 760px); margin: clamp(0.9rem,1.7vw,1.5rem) auto 0; padding: clamp(0.55rem,1vw,0.9rem) clamp(1rem,1.8vw,1.6rem); border-radius: 999px; background: rgba(244,166,42,0.13); border: 1px solid rgba(244,166,42,0.28); color: #ffd28b; font-weight: 700; text-align: center; font-size: var(--body-size); }
+    .terminal { width: min(86vw, 1040px); height: min(62vh, 520px); margin: 0 auto; background: #07090d; border: 1px solid rgba(255,255,255,0.1); border-radius: clamp(0.5rem,1vw,0.9rem); box-shadow: 0 clamp(1rem,2vw,2rem) clamp(2rem,4vw,4rem) rgba(0,0,0,0.45); overflow: hidden; }
+    .terminal-bar { height: clamp(1.8rem,3vh,2.4rem); background: #17191f; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(0.8rem,1.3vw,1.2rem); color: var(--text-muted); font-family: var(--font-mono); font-size: var(--small-size); }
+    .dots { display: flex; gap: clamp(0.25rem,0.5vw,0.45rem); }
+    .dot { width: clamp(0.45rem,0.8vw,0.65rem); height: clamp(0.45rem,0.8vw,0.65rem); border-radius: 50%; background: #ff5f57; } .dot:nth-child(2){background:#febc2e}.dot:nth-child(3){background:#28c840}
+    .terminal-body { padding: clamp(0.8rem,1.6vw,1.5rem); font-family: var(--font-mono); font-size: clamp(0.65rem,1.15vw,0.98rem); line-height: 1.7; color: #c9d1d9; }
+    .terminal-line { white-space: nowrap; overflow: hidden; }
+    .terminal.typing .terminal-line { width: 0; max-width: fit-content; opacity: 1; border-right: 0.08em solid transparent; }
+    .slide.visible .terminal.typing .terminal-line { animation: terminal-type var(--type-duration, 0.85s) steps(var(--chars, 48),end) forwards; animation-delay: var(--delay, 0s); }
+    .slide.visible .terminal.typing .terminal-line:last-child { border-right-color: var(--accent); }
+    .terminal-note { width: fit-content; max-width: min(78vw, 820px); margin: clamp(0.9rem,1.8vw,1.5rem) auto 0; padding: clamp(0.5rem,0.9vw,0.75rem) clamp(0.9rem,1.5vw,1.35rem); border-radius: 999px; background: rgba(244,166,42,0.13); border: 1px solid rgba(244,166,42,0.28); color: #ffd28b; font-weight: 800; text-align: center; font-size: clamp(0.68rem,1.05vw,0.92rem); }
+    .term-green { color: #39d353; } .term-red { color: #ff6978; } .term-yellow { color: #ffd166; } .term-dim { color: #8b949e; }
+    .roadmap { width: min(86vw, 980px); margin: 0 auto; }
+    .road-head { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(0.35rem,0.8vw,0.8rem); margin-bottom: clamp(3rem, 16vh, 8rem); }
+    .road-item { padding: clamp(0.55rem,1vw,0.9rem); border: 1px solid var(--line); background: rgba(255,255,255,0.04); color: var(--text-muted); font-size: var(--small-size); text-align: center; }
+    .road-item.active { background: rgba(244,166,42,0.16); color: #ffd28b; border-color: rgba(244,166,42,0.35); }
+    .road-title { text-align: center; }
+    .workflow-road { width: min(88vw, 980px); margin: 0 auto; }
+    .workflow-network .center-orb { font-family: var(--font-mono); }
+    .workflow-node { display: flex; flex-direction: column; }
+    .workflow-node h3 { display: flex; align-items: center; white-space: normal; font-size: clamp(0.82rem,1.35vw,1.1rem); color: var(--text-primary); }
+    .workflow-node p { font-size: clamp(0.65rem,1vw,0.85rem); }
+    .workflow-node.active { background: linear-gradient(160deg, rgba(244,166,42,0.2), rgba(255,255,255,0.035)); border-color: rgba(244,166,42,0.5); }
+    .workflow-notes { display: grid; justify-items: center; gap: clamp(0.55rem,1.1vw,0.9rem); margin-top: clamp(0.9rem,1.7vw,1.5rem); }
+    .workflow-note-main { width: fit-content; max-width: min(76vw, 760px); padding: clamp(0.46rem,0.85vw,0.7rem) clamp(0.9rem,1.5vw,1.35rem); border-radius: 999px; background: rgba(244,166,42,0.15); border: 1px solid rgba(244,166,42,0.32); color: #ffd28b; font-weight: 800; text-align: center; font-size: clamp(0.72rem,1.08vw,0.96rem); }
+    .workflow-note-sub { width: fit-content; max-width: min(70vw, 680px); padding: clamp(0.42rem,0.75vw,0.62rem) clamp(0.85rem,1.35vw,1.2rem); border-radius: clamp(0.35rem,0.7vw,0.65rem); background: rgba(0,0,0,0.74); color: var(--text-primary); font-weight: 700; text-align: center; font-size: clamp(0.66rem,1vw,0.88rem); }
+    .summary-road { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(0.8rem,2vw,1.8rem); align-items: stretch; margin-top: clamp(0.8rem,2vh,1.4rem); }
+    .summary-box, .next-box { background: linear-gradient(160deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025)); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(0.85rem,1.7vw,1.55rem); }
+    .next-box { border-color: rgba(244,166,42,0.32); background: linear-gradient(160deg, rgba(244,166,42,0.14), rgba(255,255,255,0.03)); }
+    .next-box h3 { color: var(--accent); font-size: clamp(1rem,2vw,1.75rem); line-height: 1.25; }
+    .next-box p { margin-top: clamp(0.45rem,1vw,0.85rem); color: var(--text-primary); }
+    .top-title { width: min(88vw, 980px); margin: 0 auto clamp(0.8rem,1.8vw,1.6rem); }
+    .progress-bar { position: fixed; top: 0; left: 0; height: clamp(0.12rem,0.35vh,0.22rem); background: linear-gradient(90deg, var(--accent), var(--accent-2)); width: 0%; z-index: 1000; }
+    .nav-dots { position: fixed; right: clamp(0.6rem,1.2vw,1rem); top: 50%; transform: translateY(-50%); display: grid; gap: clamp(0.22rem,0.5vh,0.35rem); z-index: 1000; }
+    .nav-dot { width: clamp(0.38rem,0.7vw,0.55rem); height: clamp(0.38rem,0.7vw,0.55rem); border-radius: 50%; background: rgba(255,255,255,0.22); border: none; cursor: pointer; }
+    .nav-dot.active { background: var(--accent); }
+
+    /* ===========================================
+       ANIMATIONS
+       =========================================== */
+    .reveal { opacity: 0; transform: translateY(clamp(1rem,3vh,2rem)); transition: opacity var(--duration-normal) var(--ease-out-expo), transform var(--duration-normal) var(--ease-out-expo); }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    @keyframes terminal-type { 0% { width: 0; } 99% { border-right-color: var(--accent); } 100% { width: 100%; border-right-color: transparent; } }
+    .reveal:nth-child(2) { transition-delay: 0.08s; } .reveal:nth-child(3) { transition-delay: 0.16s; } .reveal:nth-child(4) { transition-delay: 0.24s; }
+
+    /* ===========================================
+       RESPONSIVE LAYOUT OVERRIDES
+       =========================================== */
+    @media (max-width: 860px), (max-height: 620px) {
+      .compare-grid { grid-template-columns: 1fr 1fr; }
+      .vs { display: none; }
+      .cols-4, .cols-6 { grid-template-columns: repeat(2, 1fr); }
+      .cols-3 { grid-template-columns: repeat(3, 1fr); }
+      .bottom-nav { display: none; }
+      .caption { bottom: clamp(0.7rem,2vh,1.4rem); }
+      .terminal { height: min(64vh, 420px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" aria-hidden="true"></div>
+  <nav class="nav-dots" aria-label="幻灯片导航"></nav>
+  <main id="slides"></main>
+
+  <script>
+    /* ===========================================
+       SLIDE DATA: ONE ENTRY PER ORIGINAL IMAGE
+       =========================================== */
+    const sections = ["引言", "复杂任务的挑战", "复杂开发失控的原因", "SDD的作用", "结语"];
+    const slides = [
+      {n:1,type:"title",ep:"EP01",title:"SDD 开发模式",subtitle:"先把复杂开发为什么失控讲清楚",caption:"一旦任务变成多文件、多步骤、还要改老项目，它很快就会开始漂。",nav:0},
+      {n:2,type:"compare",title:"小任务顺手 vs 复杂任务失控",leftTitle:"小任务顺手",leftIcon:"⚡",left:["目标短，变量少","上下文还在窗口里","做完就结束，不需要接力","出错范围通常比较小"],rightTitle:"复杂任务失控",rightIcon:"✣",right:["目标会持续变化","边界和状态容易丢","要跨文件跨阶段接力","没有统一验收就会越做越偏"],note:"复杂开发难的不是输出一段代码，而是把整个过程持续对齐",caption:"小任务为什么经常看起来很顺？因为上下文短，目标也简单。",nav:1},
+      {n:3,type:"network",title:"",center:"复杂开发\n为什么会漂",items:["目标漂移\n需求边做边变，没人收口","边界不清\n可改范围只在聊天里提过","状态丢失\n上一轮决定没有沉淀下来","验收模糊\n没有一致的完成标准"],callout:"这些都不是单次回答的问题，而是过程设计的问题",caption:"我把复杂开发失控的原因，基本都收回到五件事上。",nav:2},
+      {n:4,type:"terminal",title:"一次典型的任务漂移",lines:[["term-green","$ 需求：给订单列表加导出按钮"],["term-dim","AI：我先重构一下列表页结构，顺便统一目录"],["term-dim","AI：新建 output/ 临时结果目录"],["term-red","✗ 测试未跑，验收条件未定义"],["term-yellow","! 任务已经从“加导出”漂成“顺手改一片”"]],caption:"你一开始说的是给订单列表加导出。",nav:1},
+      {n:5,type:"statement",cross:"继续堆 prompt",title:"先把过程立住",subtitle:"复杂任务的关键，不是更会说，而是更会收口",caption:"很多时候，我们不缺一个更会写代码的模型。",nav:1},
+      {n:6,type:"compare",title:"",leftTitle:"只有聊天记录",leftMark:"❌",rightMark:"✅",left:["目标讲过但没留底","边界靠上下文记忆","做到哪里凭感觉"],rightTitle:"有书面约束",right:["目标有明确描述","边界写进任务入口","验收标准先定义好"],note:"SDD不是增加形式，而是给后续实现提供稳定坐标",caption:"它不是让你多写一堆流程文档，而是先把事情说清。",nav:2},
+      {n:7,type:"statement",cross:"边聊边写",title:"先定义再实现",subtitle:"不是拖慢开发，而是把返工前置消化",caption:"它要你先把任务收成一个可执行的约束。",nav:3},
+      {n:8,type:"cards",title:"SDD 先补的三件事",cols:3,cards:[["01","目标","这次到底解决什么问题；功能边界先写清"],["02","边界","哪些能动，哪些别碰；目录、接口、依赖约束"],["03","验收","做到什么程度才算完；测试、输出、回归结果"]],caption:"SDD 先补的不是文档数量，而是目标、边界和验收。",nav:3},
+      {n:9,type:"cards",title:"适合 SDD 的四类任务",cols:4,cards:[["01","存量项目","老代码边界多，最怕顺手乱改"],["02","多人协作","人和 AI 都需要统一入口"],["03","长链路任务","需求、设计、实现要能收口"],["04","要 review 的任务","先看意图，再看实现"]],caption:"越是会牵一片的任务，越需要先把约束立住。",nav:3},
+      {n:10,type:"summaryRoad",active:0,summaryTitle:"本集小结",summary:["小任务顺手，是因为目标短、变量少、上下文还在窗口里","复杂开发会漂，是因为目标、边界、状态和验收没有持续收口","SDD 要先把过程立住，再把实现交给 AI 推进"],nextTitle:"下一集：SDD 不是多写文档，它到底在补什么",nextSubtitle:"先把问题看清，再谈方法和工具",caption:"我们先讲复杂开发为什么会漂，再讲 SDD 到底补什么。",nav:0},
+      {n:12,type:"agenda",title:"SDD 不是多写文档，它到底在补什么",subtitle:"复杂开发失控，往往不是 AI 不会写，而是过程没有被组织",caption:"更大的问题，是我们没有给后面的实现和验证建立事实来源。",nav:3},
+      {n:13,type:"title",ep:"EP02",title:"SDD 开发模式",subtitle:"它不是多写文档，而是补一份共同事实来源",caption:"这是不是只是先多写几份文档？",nav:0},
+      {n:14,type:"compare",title:"",leftTitle:"常见误解",left:["先写一堆文档","写完放着不更新","项目一忙就回到裸聊","最后只剩形式感"],rightTitle:"真正要补的",right:["给实现建立事实来源","让 review 有共同参照","让验证能对齐需求","让变更可以追溯和交接"],caption:"价值不在写了什么，而在后面是否真的按它推进。",nav:3},
+      {n:15,type:"compare",title:"",leftTitle:"没有 SPEC",left:["目标靠聊天补充","边界一忙就忘","做完靠直觉判断"],rightTitle:"有稳定 SPEC",right:["目标可回看","边界可对照","验收可执行"],caption:"spec 真正提供的是持续对齐能力。",nav:3},
+      {n:16,type:"statement",cross:"模糊需求",title:"可执行约束",subtitle:"不是增加流程，而是减少返工",caption:"一旦目标写下来，边界写清楚，很多返工会提前暴露。",nav:3},
+      {n:17,type:"cards",title:"一份 spec 最少回答什么",cols:3,cards:[["01","目标","这次做什么，为什么做"],["02","边界","能做什么，不能做什么"],["03","验收","最后如何判断完成"]],caption:"最小 spec 不追求漂亮，先追求能对齐。",nav:3},
+      {n:18,type:"network",title:"SDD 在更上层收口",center:"SDD",items:["TDD\n先写测试，定义代码行为","BDD\n先写行为，强调用户视角","技术规格\n架构约束与实现前提","需求规格\n功能目标与边界条件"],callout:"把不同阶段的约束收进一份可执行事实来源",caption:"SDD 不是替代 TDD 或 BDD，而是在更上层收口。",nav:3},
+      {n:19,type:"cards",title:"更完整的 spec 内容",cols:6,cards:[["01","目标与价值","解决什么问题"],["02","上下文与约束","依赖和限制"],["03","输入输出","接口、字段、文件"],["04","边界条件","异常、反例、禁止项"],["05","验收标准","完成门槛"],["06","技术要求","性能、安全、维护性"]],caption:"不是一上来就重文档，而是让关键约束有位置。",nav:3},
+      {n:20,type:"compare",title:"",leftTitle:"可以先别上太重",left:["探索型原型","一两行的小改动","紧急修复先止血","强主观的临时试验"],rightTitle:"值得走 SDD",right:["复杂功能迭代","多人或多 agent 协作","需要 review 和追溯","做偏了返工很贵的任务"],caption:"不是所有地方都要工程化，但复杂任务不能一直靠感觉推进。",nav:3},
+      {n:21,type:"statement",cross:"先写代码再补解释",title:"先把约束写稳再实现",subtitle:"复杂项目真正浪费时间的通常不是设计，而是返工",caption:"以前你觉得设计慢，其实很多时候返工更慢。",nav:3},
+      {n:22,type:"terminal",title:"一个功能级 spec 最小轮廓",lines:[["term-green","目标：给订单列表增加导出能力"],["term-dim","边界：只改列表与导出链路，不重构查询模块"],["term-dim","输入输出：选择条件 → 导出文件"],["term-yellow","异常：无权限、导出超时、空数据"],["term-green","验收：接口可回归，结果可下载，日志可追踪"]],caption:"最小 spec 可以很轻，但要可执行。",nav:3},
+      {n:23,type:"terminal",title:"review 顺序也会变化",lines:[["term-green","Step 1：先看目标和边界有没有写清"],["term-green","Step 2：再看验收标准是否可执行"],["term-green","Step 3：最后再看代码实现是否对齐 spec"],["term-yellow","review 不再只是盯 diff，而是对齐共同事实来源"]],caption:"先 review 意图和约束，再 review 实现。",nav:3},
+      {n:24,type:"summaryRoad",active:1,summaryTitle:"本段小结",summary:["SDD 不是多写文档，而是补一份共同事实来源","spec 至少要回答目标、边界和验收，让实现有参照","review 顺序也要变化：先看意图和约束，再看代码实现"],nextTitle:"下一集：为什么 OpenSpec 更容易让 SDD 落地",nextSubtitle:"给后面的实现和验证建立事实来源",caption:"SDD 不是把开发变成文档劳动。",nav:4},
+      {n:25,type:"title",ep:"EP03",title:"SDD 开发模式",subtitle:"OpenSpec 为什么更容易被真正用起来",caption:"真正难的不是理念，而是团队能不能长期照着做。",nav:0},
+      {n:26,type:"compare",title:"",leftTitle:"重流程体验",left:["阶段很多","命令记不住","先学工具再做需求","团队很容易半路放弃"],rightTitle:"OpenSpec 体验",right:["主路径很短","四个动作容易形成习惯","先解决需求，再补流程细节","更适合日常迭代"],caption:"它降低的是采用门槛，而不是把事情讲得更玄。",nav:3},
+      {n:27,type:"network",title:"",center:"OpenSpec\n为什么更容易落地",items:["命令少\n主路径只有四个动作","工作全\nproposal、design、tasks、specs","可评审\n先审意图，再审实现","可归档\n变更能并回主规范库"],callout:"它真正降低的是采用门槛，而不是把事情讲得更玄",caption:"命令少，工作完整，可评审，可归档，而且不强绑定某一个工具。",nav:3},
+      {n:28,type:"workflow",active:2,steps:[["Explore","先澄清需求与边界"],["Propose","proposal、design、tasks、specs 都有位置"],["Apply","按清单实现，先审意图再审实现"],["Archive","变更能并回主规范库"]],noteMain:"主路径短，团队才更容易每天用",noteSub:"流程越轻，越可能变成习惯"},
+      {n:30,type:"compare",title:"",leftTitle:"只有聊天记录",left:["讨论完就散","后续靠记忆恢复","review 只能看 diff"],rightTitle:"有结构化工作链",right:["意图、方案、任务分层沉淀","后续可按文档恢复上下文","review 可以分阶段看问题"],note:"结构化文件越完整，协作越不像碰运气",caption:"结构化工作越主路径，协作越不像碰运气。",nav:3},
+      {n:31,type:"statement",cross:"聊完就忘",title:"讨论变成资产",subtitle:"工作的价值在于后续还会被持续使用",caption:"proposal 讲为什么，design 讲怎么做，tasks 讲怎么推进。",nav:3},
+      {n:32,type:"cards",title:"OpenSpec 默认留下什么",cols:4,cards:[["01","proposal","为什么做这次改动"],["02","design","实现路径和关键决策"],["03","tasks","可执行任务清单"],["04","specs","并回系统的长期规范"]],caption:"这些不是摆设，会影响 review、回顾、接手和后续迭代。",nav:3},
+      {n:33,type:"terminal",typing:true,title:"一条最小 OpenSpec 工作流",lines:[["term-green","$ npm install -g @fission-ai/openspec@latest"],["term-green","$ openspec init"],["term-green","/opsx:explore 给订单列表加导出功能"],["term-green","/opsx:propose 增加订单导出能力"],["term-green","/opsx:apply"],["term-green","/opsx:archive add-order-export --yes"]],note:"顺序本身并不神秘，价值在于每一步都留下了后续可复用的产物",caption:"先 init，再 explore，再 propose，再 apply，最后 archive。",nav:3},
+      {n:34,type:"compare",title:"",leftTitle:"探索阶段",left:["先跑出方向","问题还在收敛","可以先轻量一点","后面再决定是否补规范"],rightTitle:"生产迭代",right:["要考虑 review 与回溯","改动要能交接","存量系统不能随便漂","更适合走完整规范闭环"],caption:"OpenSpec 更像生产级迭代主路径，不是替代所有探索行为。",nav:3},
+      {n:35,type:"cards",title:"多智能体协作的三步",cols:3,cards:[["01","先 init","把规范层入口补起来"],["02","先 propose","先生成可评审工作再实现"],["03","做完 archive","把一次变更并回系统规范"]],caption:"先把共同入口立住，再让 agent 接力。",nav:3},
+      {n:36,type:"agenda",title:"多智能体协作：先文档，再拆解",subtitle:"OpenSpec 把复杂流程压成团队愿意长期执行的最小动作",caption:"下一讲真正进入多 agent 交接问题。",nav:4},
+      {n:37,type:"title",ep:"EP04",title:"SDD 开发模式",subtitle:"多智能体真正难的不是执行，而是交接",caption:"多智能体一开始容易想得很美。",nav:0},
+      {n:38,type:"compare",title:"",leftTitle:"直接并行开干",left:["每个 agent 自己理解需求","接口和字段容易漂移","合并时才暴露冲突","返工成本很高"],rightTitle:"先文档再并行",right:["目标和边界先写清楚","任务按交付单元拆开","接口和验收先对齐","并行时更容易稳定收口"],caption:"协作不是把任务扔出去，而是先把共同事实立住。",nav:3},
+      {n:39,type:"network",title:"多智能体协作的共同事实",center:"共同事实\n来源",items:["Goal\n这次到底要交付什么","Design\n关键方案与边界怎么定","Contracts\n接口、字段、输入输出","Acceptance\n做到什么算完成"],callout:"先把共享事实从聊天变成文档",caption:"否则每个 agent 都会带着自己的理解往前跑。",nav:3},
+      {n:40,type:"terminal",title:"一次典型并行翻车链路",lines:[["term-green","Agent A：修改 response 字段结构"],["term-dim","Agent B：继续按旧字段补测试"],["term-dim","Agent C：合并分支并跑集成"],["term-red","ERROR：接口契约不一致，测试全部失效"],["term-yellow","问题不是代码量，而是共享契约从未写清"]],caption:"一个 agent 改了字段，另一个 agent 还按旧字段写测试。",nav:3},
+      {n:41,type:"compare",title:"",leftTitle:"按人分活",left:["谁想做什么就先做","边界常常后置","合并时才发现不匹配"],rightTitle:"按交付单元拆",right:["先定输入输出","接口契约先锁定","每块都有完成标准"],caption:"多智能体并行之前，最关键的是拆解方式。",nav:3},
+      {n:42,type:"statement",cross:"按人分工",title:"按交付单元拆",subtitle:"任务能否并行，取决于边界是否独立、验收是否清楚",caption:"先把输入输出、契约和验收拆清。",nav:3},
+      {n:43,type:"cards",title:"更稳的三步拆法",cols:3,cards:[["01","定输入输出","先看这块接什么、产什么"],["02","写契约","把字段和边界写清楚"],["03","设验收门","每块都知道怎样算完"]],caption:"先定义交付单元，再分配执行者。",nav:3},
+      {n:44,type:"cards",title:"交付单元的三个文件",cols:3,cards:[["01","proposal.md","说明目标、边界和风险"],["02","tasks.md","拆成可勾选单元"],["03","handoff.md","记录当前状态和下一步"]],caption:"交接核心不是漂亮，而是下一棒能接上。",nav:3},
+      {n:45,type:"terminal",title:"60 秒起手动作",lines:[["term-green","read proposal.md"],["term-green","read contracts.md && read tasks.md"],["term-green","assign Agent A -> API, Agent B -> UI, Agent C -> tests"],["term-yellow","每个 agent 先明确输入、输出、互域、验收门"]],caption:"先读清楚，再开始干。",nav:3},
+      {n:46,type:"terminal",title:"最小 handoff 说明",lines:[["term-green","Done：导出接口已补齐，字段契约已锁定"],["term-yellow","Next：继续补下载测试和权限回归"],["term-red","Risk：前端仍在使用旧字段，需要同步更新"]],caption:"handoff 不求漂亮，先求下一棒能立即接上。",nav:3},
+      {n:47,type:"compare",title:"",leftTitle:"先别并行",left:["接口还在变","字段命名没锁定","验收门不明确","写域互相覆盖"],rightTitle:"可以并行",right:["输入输出已固定","契约已经成文","任务边界互不干扰","完成标准都能独立检查"],caption:"并行不是默认动作，很多任务应该先串行收口。",nav:3},
+      {n:48,type:"title",ep:"EP05",title:"SDD 开发模式",subtitle:"用四个动作跑通一次真实交付链",caption:"最后这一集，我想把它们重新收回到一条最小闭环里。",nav:0},
+      {n:49,type:"roadmap",title:"下一集：最小 SDD + OpenSpec 闭环实操",active:3,caption:"并行只是手段，交接才是核心。",nav:4},
+      {n:50,type:"agenda",title:"最小 SDD + OpenSpec 闭环实操",subtitle:"今天就可以用一个小需求跑通一轮闭环",caption:"今天只做一个很小的动作。",nav:4},
+      {n:51,type:"title",ep:"EP05",title:"SDD 开发模式",subtitle:"把前面的内容收束到一条最小闭环",caption:"问题、spec、OpenSpec 和多智能体协作，最后都要回到一条能跑通的链。",nav:0},
+      {n:52,type:"network",title:"最小闭环四动作",center:"最小\n闭环",items:["Explore\n先把需求和边界聊清楚","Propose\n生成 proposal、design、tasks、specs","Apply\n按任务执行，不靠感觉一路冲","Archive\n把增量并回主规范库"],callout:"每一步都可看、可对齐、可继续推进",caption:"中间最关键的，是 explore、propose、apply、archive。",nav:3},
+      {n:53,type:"terminal",title:"起手：init / explore / propose",lines:[["term-green","openspec init"],["term-green","/opsx:explore 给订单列表加导出功能"],["term-green","/opsx:propose 增加订单导出能力"],["term-dim","生成 changes/add-order-export/... 全套工作"],["term-yellow","propose 先把本次变更收成可评审工作"]],caption:"不要一上来开写，先收成可评审工作。",nav:3},
+      {n:54,type:"cards",title:"propose 阶段产物",cols:4,cards:[["01","proposal.md","为什么做、影响哪些范围"],["02","design.md","怎么实现、关键取舍"],["03","tasks.md","按什么顺序推进"],["04","specs/","新增或修改了什么规范"]],caption:"后续实现、review 和交接都会围着这些工作转。",nav:3},
+      {n:55,type:"terminal",title:"apply 阶段任务推进",lines:[["term-green","[ ] 新增导出接口"],["term-green","[ ] 补服务层导出逻辑"],["term-green","[ ] 回归权限校验与下载测试"],["term-yellow","每一步做完都回看 spec 与验收门"],["term-dim","apply 不是一路往前冲，而是带着任务清单止损推进"]],caption:"按任务推进，不是直接冲。",nav:3},
+      {n:56,type:"compare",title:"",leftTitle:"不做 Archive",left:["changes 只停在临时目录","代码改了，主规范没更新","后续继续迭代时又要猜"],rightTitle:"做 Archive",right:["增量规范并回主 specs","系统现状可回看","后续迭代有统一入口"],caption:"archive 不是收尾动作而已，它决定文档会不会腐烂。",nav:3},
+      {n:57,type:"statement",cross:"写完再一起验",title:"边做边验",subtitle:"验证越后置，返工越贵",caption:"它不是 apply 之后统一验，而是每一步都带验证门。",nav:3},
+      {n:58,type:"cards",title:"最少要盯住哪些验证门",cols:3,cards:[["01","边界门","有没有超出本次范围"],["02","契约门","接口和字段是否一致"],["03","测试门","关键回归是否补齐"]],caption:"是否偏离边界、接口是否对齐、测试是否补上、回归是否通过。",nav:3},
+      {n:59,type:"compare",title:"",leftTitle:"归档前",left:["changes 仍停在临时变更目录","代码变了，主 specs 没有更新","后续迭代仍要靠人猜当前状态"],rightTitle:"归档后",right:["增量规范合并回主 specs","系统现状有统一入口","后续开发可以基于最新事实继续推进"],caption:"最后一步 archive，把事实来源带回系统。",nav:4}
+    ];
+
+    /* ===========================================
+       RENDER HELPERS: PRESERVE ORIGINAL LAYOUT TYPES
+       =========================================== */
+    const esc = (s) => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    function bottomNav(active=0){ return ""; }
+    function caption(text){ return text ? `<div class="caption reveal">${esc(text)}</div>` : ""; }
+    function titleSlide(s){ return `<section class="slide title-layout" data-slide="${s.n}"><div class="slide-content"><div class="tag reveal">SDD 开发模式 · ${esc(s.ep||'')}</div><h1 class="reveal">${esc(s.title)}</h1><p class="subtitle reveal">${esc(s.subtitle||'')}</p></div></section>`; }
+    function agendaSlide(s){ return `<section class="slide agenda-layout" data-slide="${s.n}"><div class="slide-content"><h2 class="reveal">${esc(s.title)}</h2><p class="subtitle reveal">${esc(s.subtitle||'')}</p></div></section>`; }
+    function statementSlide(s){ return `<section class="slide statement-layout" data-slide="${s.n}"><div class="slide-content"><div class="crossed reveal">${esc(s.cross)}</div><div class="arrow-down reveal">↓</div><h2 class="reveal"><span class="accent">${esc(s.title)}</span></h2><p class="subtitle reveal">${esc(s.subtitle||'')}</p></div></section>`; }
+    function compareSlide(s){ const list = (arr, mark) => `<ul>${arr.map(x=>`<li>${mark ? `<span class="list-mark">${esc(mark)}</span>` : ''}${esc(x)}</li>`).join('')}</ul>`; const note = s.note ? `<div class="bottom-note reveal">${esc(s.note)}</div>` : ''; const heading = s.title ? `<div class="top-title reveal"><h2>${esc(s.title)}</h2></div>` : ''; return `<section class="slide" data-slide="${s.n}"><div class="slide-content">${heading}<div class="compare-grid reveal"><article class="compare-card left"><h3><span class="icon-small">${s.leftIcon||'▧'}</span>${esc(s.leftTitle)}</h3>${list(s.left, s.leftMark)}</article><div class="vs">VS</div><article class="compare-card right"><h3><span class="icon-small">${s.rightIcon||'▣'}</span>${esc(s.rightTitle)}</h3>${list(s.right, s.rightMark)}</article></div>${note}</div></section>`; }
+    function cardsSlide(s){ return `<section class="slide" data-slide="${s.n}"><div class="slide-content"><div class="top-title reveal"><h2>${esc(s.title)}</h2></div><div class="card-grid cols-${s.cols} reveal">${s.cards.map(c=>`<article class="info-card"><h3><span class="num">${esc(c[0])}</span>${esc(c[1])}</h3><p>${esc(c[2])}</p></article>`).join('')}</div></div></section>`; }
+    function networkSlide(s){ const heading = s.title ? `<div class="top-title reveal"><h2>${esc(s.title)}</h2></div>` : ''; return `<section class="slide" data-slide="${s.n}"><div class="slide-content">${heading}<div class="network reveal"><div class="center-orb">${esc(s.center).replace(/\n/g,'<br>')}</div>${s.items.map((it,i)=>{const parts=it.split('\n');return `<article class="info-card node"><h3><span class="num">0${i+1}</span>${esc(parts[0])}</h3><p>${esc(parts[1]||'')}</p></article>`}).join('')}</div><div class="callout reveal">${esc(s.callout)}</div></div></section>`; }
+    function terminalSlide(s){ return `<section class="slide" data-slide="${s.n}"><div class="slide-content"><div class="terminal ${s.typing?'typing':''} reveal"><div class="terminal-bar"><div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><span>${esc(s.title)}</span><strong>CLAUDE CODE</strong></div><div class="terminal-body">${s.lines.map(([cls,text],i)=>`<div class="terminal-line ${cls}" style="--delay:${(i*0.9).toFixed(1)}s;--chars:${String(text).length};--type-duration:${Math.max(0.7, String(text).length * 0.045).toFixed(2)}s">${esc(text)}</div>`).join('')}</div></div>${s.note ? `<div class="terminal-note reveal">${esc(s.note)}</div>` : ''}</div></section>`; }
+    function roadmapSlide(s){ return `<section class="slide" data-slide="${s.n}"><div class="slide-content"><div class="roadmap reveal"><div class="road-head">${["复杂开发为什么会漂","SDD 到底补什么","OpenSpec 如何落地","多智能体与闭环"].map((x,i)=>`<div class="road-item ${i===s.active?'active':''}">${esc(x)}</div>`).join('')}</div><div class="road-title"><div class="tag">10 讲路线图</div><h2>${esc(s.title)}</h2></div></div></div></section>`; }
+    function workflowSlide(s){ return `<section class="slide" data-slide="${s.n}"><div class="slide-content"><div class="workflow-road reveal"><div class="network workflow-network"><div class="center-orb">OpenSpec</div>${s.steps.map((step,i)=>`<article class="info-card node workflow-node"><h3><span class="num">0${i+1}</span>${esc(step[0])}</h3><p>${esc(step[1]||'')}</p></article>`).join('')}</div><div class="workflow-notes"><div class="workflow-note-main">${esc(s.noteMain||'')}</div><div class="workflow-note-sub">${esc(s.noteSub||'')}</div></div></div></div></section>`; }
+    function summaryRoadSlide(s){ return `<section class="slide" data-slide="${s.n}"><div class="slide-content"><div class="roadmap reveal"><div class="road-head">${["复杂开发为什么会漂","SDD 到底补什么","OpenSpec 如何落地","多智能体与闭环"].map((x,i)=>`<div class="road-item ${i===s.active?'active':''}">${esc(x)}</div>`).join('')}</div><div class="summary-road"><article class="summary-box"><span class="tag">${esc(s.summaryTitle)}</span><ul>${s.summary.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></article><article class="next-box"><span class="tag">NEXT</span><h3>${esc(s.nextTitle)}</h3><p>${esc(s.nextSubtitle)}</p></article></div></div></div></section>`; }
+    function renderSlide(s){ return ({title:titleSlide,agenda:agendaSlide,statement:statementSlide,compare:compareSlide,cards:cardsSlide,network:networkSlide,terminal:terminalSlide,roadmap:roadmapSlide,workflow:workflowSlide,summaryRoad:summaryRoadSlide}[s.type] || agendaSlide)(s); }
+    document.getElementById('slides').innerHTML = slides.map(renderSlide).join('');
+
+    /* ===========================================
+       SLIDE PRESENTATION CONTROLLER
+       =========================================== */
+    class SlidePresentation {
+      constructor(){
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.navDotsContainer = document.querySelector('.nav-dots');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.setupIntersectionObserver();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupProgressBar();
+        this.setupNavDots();
+      }
+      goToSlide(index){
+        const target = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides[target].scrollIntoView({behavior:'smooth'});
+      }
+      setupIntersectionObserver(){
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if(entry.isIntersecting){
+              entry.target.classList.add('visible');
+              this.currentSlide = this.slides.indexOf(entry.target);
+              this.updateUI();
+            }
+          });
+        }, {threshold: 0.55});
+        this.slides.forEach(slide => observer.observe(slide));
+        this.slides[0]?.classList.add('visible');
+      }
+      setupKeyboardNav(){
+        document.addEventListener('keydown', e => {
+          if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){ e.preventDefault(); this.goToSlide(this.currentSlide + 1); }
+          if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); this.goToSlide(this.currentSlide - 1); }
+          if(e.key === 'Home'){ e.preventDefault(); this.goToSlide(0); }
+          if(e.key === 'End'){ e.preventDefault(); this.goToSlide(this.slides.length - 1); }
+        });
+      }
+      setupTouchNav(){
+        let startY = 0;
+        document.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, {passive:true});
+        document.addEventListener('touchend', e => {
+          const delta = startY - e.changedTouches[0].clientY;
+          if(Math.abs(delta) > 45) this.goToSlide(this.currentSlide + (delta > 0 ? 1 : -1));
+        }, {passive:true});
+      }
+      setupWheelNav(){
+        let locked = false;
+        document.addEventListener('wheel', e => {
+          if(locked || Math.abs(e.deltaY) < 28) return;
+          locked = true;
+          this.goToSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+          setTimeout(() => locked = false, 650);
+        }, {passive:true});
+      }
+      setupProgressBar(){ window.addEventListener('scroll', () => this.updateUI(), {passive:true}); }
+      setupNavDots(){
+        this.navDotsContainer.innerHTML = '';
+        this.slides.forEach((_, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'nav-dot';
+          btn.setAttribute('aria-label', `跳转到第 ${i + 1} 页`);
+          btn.addEventListener('click', () => this.goToSlide(i));
+          this.navDotsContainer.appendChild(btn);
+        });
+        this.updateUI();
+      }
+      updateUI(){
+        const percent = this.slides.length <= 1 ? 100 : (this.currentSlide / (this.slides.length - 1)) * 100;
+        this.progressBar.style.width = `${percent}%`;
+        document.querySelectorAll('.nav-dot').forEach((dot, i) => dot.classList.toggle('active', i === this.currentSlide));
+      }
+    }
+    new SlidePresentation();
+  </script>
+</body>
+</html>
